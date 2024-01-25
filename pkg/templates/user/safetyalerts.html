@@ -1,0 +1,52 @@
+{% extends "user/home_layout.html" %}
+
+{% block navalerts %}
+  <a class="nav-link active" href="{{url_for('safety_alerts')}}">Safety Alerts</a>
+{% endblock navalerts %}
+
+{% block content %}
+    <div class="my-5 py-4">
+      <!-- Page Content -->
+      <div class="container mt-2">
+        <!-- Safety Alerts -->
+        <div class="row justify-content-center">
+          <div class="col-md-11">
+            <h1 class="display-3">Safety Alerts</h1>
+            <p class="lead">Step into the beacon of vigilance with the Safety Alerts enclave of the Community Safety Network! This designated realm is your watchtower, committed to keeping you not just informed but empowered when it comes to matters of safety in your community. Get ready for an immersive experience that transforms alerts into opportunities for preparedness and community resilience.</p>
+            <!-- Safety Alerts 1 -->
+            <div>
+            <h5>Suspicious Activity Reports</h5>
+            <img src="path/to/news2.jpg" alt="alerts 2 Image">
+            <p class="lead">Be an active participant in community safety. If you witness any suspicious activities or behaviors in your neighborhood, use the incident reporting feature to share the details with your fellow residents. Together, we can maintain a vigilant and secure community.</p>
+            </div>
+            <!-- Safety Alerts 2 -->
+            <div>
+            <h5>Emergency Situations</h5>
+            <img src="path/to/news2.jpg" alt="alerts 2 Image">
+            <p class="lead">In the unfortunate event of emergencies such as natural disasters, fires, or other critical incidents, this section will provide real-time safety alerts. Stay informed about the situation and follow the recommended precautions to ensure your safety and that of your neighbors.</p>
+            </div>
+            <!-- Safety Alerts 3 -->
+            <div>
+            <h5>Public Safety Announcements</h5>
+            <img src="path/to/news2.jpg" alt="alerts 2 Image">
+            <p class="lead">Receive public safety announcements directly through this platform. Stay informed about law enforcement advisories, community policing efforts, and other important messages from local authorities. Your active engagement contributes to a safer living environment for everyone.</p>
+            </div>
+            <!-- Safety Alerts 3 -->
+            <div>
+            <h5>Anonymous Reporting Feature</h5>
+            <img src="path/to/news2.jpg" alt="alerts 2 Image">
+            <p class="lead">We value your input, and your anonymity is important. If you have information to share but prefer to remain anonymous, use the anonymous reporting feature. Encourage open communication within the community, allowing residents to share information without fear of retaliation.</p>
+            </div>
+            <br>
+            <div>
+              <h5 class="outro_mess">Remember, your active participation and awareness are key to creating a safe and secure neighborhood. Explore the Safety Alerts section regularly and be an integral part of the Community Safety Network</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+        
+
+    </div>
+
+    {% endblock content %}
+    

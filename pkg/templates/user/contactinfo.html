@@ -1,0 +1,50 @@
+{% extends "user/home_layout.html" %}
+
+{% block content %}
+<div class="container-fluid mt-2">
+    <div class="row justify-content-center align-items-center pt-5">
+         <!-- Contact deatails Column -->
+         <div class="col-md-5 pt-4">
+            <div>
+                <h1 class="display-3">Contact Information</h1>
+                <p class="lead">You can contact us whatever way that is convenient for you. We are available 24/7 via email,telephone call and socals. You can also use the quick contact form to the right</p>
+            </div>
+            <div>
+                <h5>Admin Contact Information</h5>
+                <p>Email: admin@commsafe.ng</p>
+                <p>Phone Number: +2347030503109</p>
+                <p>Social Media: LinkedIn, Twitter, Facebook</p>
+                <p>Additional Information: For urgent matters, please contact during business hours.</p>
+            </div>
+            <div>
+                <h5>General Contact Information</h5>
+                <p>Email: info@commsafe.ng</p>
+                <p>Phone Number: +2348026633110</p>
+                <p>Official Hours: Monday to Friday, 9:00 AM - 5:00 PM</p>
+            </div>
+         </div>
+         <!--Quick Contact Form-->
+         <div class="col-md-4 pt-4">
+            <form action="" method="post">
+                {{ contact.csrf_token }}
+                <div class="form-floating mb-3">
+                    {{ contact.name(class="form-control bgcolor labelcol text-light", id="cont_name") }}
+                    {{ contact.name.label(class="labelcol") }}
+                </div>
+                <div class="form-floating mb-3">
+                    {{ contact.email(class="form-control bgcolor labelcol text-light", id="cont_email") }}
+                    {{ contact.email.label(class="labelcol") }}
+                </div>
+                <div class="form-floating mb-3">
+                    {{ contact.message(class="form-control bgcolor labelcol text-light", id="cont_msg") }}
+                    {{ contact.message.label(class="labelcol") }}
+                </div>
+                <div>
+                    {{ contact.submit(class="btn rounded-pill col-12", id="btn_login") }}
+                </div>
+            </form>
+
+         </div>
+    </div>
+</div>
+{% endblock content %}

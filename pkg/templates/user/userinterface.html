@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="Opeoluwa Akinuliola">
+    <title>Community Safety Network - Homepage</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='external/external.css')}}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='animate.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fontawesome-free-6.5.1-web/css/all.css')}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@300&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz:wght@200&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amatic+SC&display=swap" rel="stylesheet">
+    <style type="text/css">
+      /* *{
+        border: 1px solid red
+      } */
+      /* *{
+        border:none;
+      } */
+
+    </style>
+</head>
+<body class="bgcolor">
+  <div class="container-fluid">
+      <nav class="navbar navbar-dark bgcolor fixed-top">
+        <div class="container-xl">
+          <a class="navbar-brand brand_col" href="{{ url_for('userpage') }}">
+            <img src="{{ url_for('static', filename='images/csn.png')}}" alt="Logo" width="28px" class="d-inline-block align-text-top">&nbsp;<span class="home_brand_text">CSN</span>
+          </a>
+          <ul class="nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{{ url_for('userpage') }}" title="Home"><i class="fa-solid fa-house fa-lg" style="color: #02834f;"></i></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('user_search_page')}}" title="Search"><i class="fa-solid fa-magnifying-glass fa-lg" style="color: #02834f;"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-none d-md-block">
+              <a class="nav-link" href="#postModal" title="Post" data-bs-toggle="modal" data-bs-target="#postModal"><i class="fa-regular fa-pen-to-square fa-lg" style="color: #02834f;"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-none d-md-block">
+                <a class="nav-link" href="{{ url_for('user_profile')}}" title="Profile"><i class="fa-regular fa-user fa-lg" style="color: #02834f;"></i></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="" title="Notifications"><i class="fa-regular fa-bell fa-lg position-relative" style="color: #02834f;"></i></a>
+                <div class="txt">10</div>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('user_message')}}" title="Messages"><i class="fa-regular fa-envelope fa-lg position-relative" style="color: #02834f;"></i></a>
+                <div class="txt">27</div>
+              </li>        
+          </ul>
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
+            <span class="bgcolor"><i class="fa-solid fa-arrow-right-arrow-left fa-bounce" style="color: #02834f;"></i></span>
+          </button>
+          <div class="offcanvas offcanvas-end bg-transparent " tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+            <div class="overlay">
+              <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Hello {{deets.user_fname}}!</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              </div>
+              <div class="offcanvas-body menu">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 menu">
+                  <li><a class="dropdown-item" href="{{ url_for('user_profile')}}">Profile</a></li>
+                  <li><a class="dropdown-item" href="">Change Password</a></li>
+                  <li><a class="dropdown-item" href="#">Premium Access</a></li>
+                  <li><hr></li>
+                  <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+              <div class="row justify-content-center pt-5">
+                {% block left_content %}
+                <div class="col-sm-3 scroll d-none d-sm-none d-md-block">
+                  <div class="tab1 pt-3">
+                    <div class="my-2"><a href="{{ url_for('user_comm_news')}}"><i class="fa-solid fa-rss" style="color:white;font-size:22px;"></i>&nbsp;Community News</a></div>
+                    <div class="my-2"><a href="{{url_for('user_safety_alerts')}}"><i class="fa-regular fa-triangle-exclamation" style="color:white;font-size:22px;"></i>Safety Alerts</a></div>
+                    <div class="my-2"><a href="{{ url_for('user_community_members')}}">Community Members</a></div>
+                    <div class="my-2"><a href="{{ url_for('schools_nearby')}}">Schools Nearby</a></div>
+                    <div class="my-2"><a href="{{ url_for('church_nearby')}}">Church Nearby</a></div>
+                    <div class="my-2"><a href="{{ url_for('mosque_nearby')}}">Mosque Nearby</a></div>
+                    <div class="my-2"><a href="{{ url_for('hospital_nearby')}}">Hospital Nearby</a></div>
+                    <div class="my-2"><a href="{{ url_for('user_volunter_opp')}}">Volunteer Opportunities</a></div>
+                    <div class="my-2"><a href="{{ url_for('user_community_forum')}}">Community Forums</a></div>
+                    <div class="my-2"><a href="{{ url_for('neighbourhood_watch')}}">Neighbourhood Watch</a></div>
+                    <div class="my-2"><a href="{{ url_for('community_feedback')}}">Community Feedback</a></div>
+                  </div>
+                </div>
+                {% endblock left_content %}
+                {% block otherpages %}
+                <div class="col-sm-8 tab2 pt-5 scroll" style="border-right: 0.1px solid #02834f;">
+                  <div>
+                    {% if deets and deets.user_picture != None %}
+                    <a href="#" ><img id="user_session_img" src="/static/profile_pictures/{{deets.user_picture}}" alt="mdo" width="60" height="60" class="position-relative id_pix"></a>
+                    {% else %}
+                        <a href="#" ><img id="user_session_img" src="/static/images/user.jpeg" alt="user" width="60" height="60" class="position-relative id_pix"></a>
+                    {% endif %}
+                  </div>
+                  {% block othercontent %}
+                  {% endblock othercontent %}
+                </div>
+                {% endblock otherpages %}
+                {% block mid_content %}
+                <div class="col-sm-5 tab2 pt-4 scroll">
+                  <!--Post report input session-->
+                  <div  class="row justify-content-center gap-2" id="post_field">
+                    <div class="col-1">
+                      <div>
+                        {% if deets and deets.user_picture != None %}
+                          <img id="user_img" src="/static/profile_pictures/{{deets.user_picture}}" width="60px" height="60px" alt="{{deets.user_fname}}">
+                        {% else %}
+                          <img id="user_img" src="/static/images/user.jpeg" width="60px" height="60px" alt="user">
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="col-10">
+                      <form action="" method="post">
+                        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                        <textarea name="post" id="post_box" cols="45" rows="3" placeholder="Select a category to post a report" class="form-control bgcolor text-light" autocomplete="off"></textarea>
+                        <div>
+                            <div class="form-check form-switch mt-2 me-4" id="post_button">
+                                <select name="category" id="category" class="bg-transparent text-success custom_border">
+                                  <option value="">category</option>
+                                  {% for category in report_category %}
+                                  <option value="{{category.report_category_id}}">{{category.report_category_name}}</option>
+                                  {% endfor %}
+                                </select>
+                                <input type="checkbox" class="btn-check" name="anonymous" id="btn-check-2-outlined" autocomplete="off">
+                                <label class="btn btn-outline-success btn-sm" for="btn-check-2-outlined">Anonymous</label>
+                                <input type="submit" value="Post" class="btn btn-sm post_button">
+                            </div>
+                          <i class="fa-solid fa-photo-film fa-lg" style="color: #02834f;"></i> &nbsp;&nbsp;&nbsp;
+                          <i class="fa-solid fa-square-poll-horizontal fa-lg" style="color: #02834f;"></i>&nbsp;&nbsp;&nbsp;
+                          <i class="fa-solid fa-location-dot fa-lg" style="color: #02834f"></i>
+                    </div>
+                  </form>
+                </div>
+                  <div class="mb-0"><h4 class="text-center">Recent Alerts</h4></div>
+              </div>
+              <!--End post report input session-->
+              <!--Recent Updates Session-->
+
+
+
+              {% for post in all_posts %}
+                {% if post.report_hide_user == "on" %}
+                <hr style="color: aliceblue;">
+              <div class="row justify-content-center gap-2 mb-3">
+                <div class="col-11 overlay">
+                  <div class="row">
+                    <div class="col-1">
+                      <div><img id="user_img" src="/static/images/user.jpeg" width="60px" height="60px" alt="{{ post.report_user_deets.user_fname }} {{ post.report_user_deets.user_lname }}"></div>
+                  </div>
+                  <div class="col-11" >
+                    <div class="row d-flex justify-content-between">
+                      <div class="col-4 post_engagement_col">
+                        <p>Anonymous User</p>
+                      </div>
+                      <div class="col-5 post_engagement_col text-end">
+                      <p> {{ post.report_date }}</p>
+                      </div>
+                  </div>
+                  <p>{{ post.report_desc }}</p>
+                    <div class="row d-flex justify-content-between">
+                        <div class="col-4 post_engagement_col">
+                          <span>favorie</span>
+                          <span>comment</span>
+                        </div>
+                        <div class="col-5 post_engagement_col text-end">
+                          <span>{{post.report_cat_deets.report_category_name}}</span>
+                        </div>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                {% else %}
+                <hr style="color: aliceblue;">
+              <div class="row justify-content-center gap-2 mb-3">
+                <div class="col-11">
+                  <div class="row">
+                    <div class="col-1"> 
+                      {% if post.report_user_deets.user_picture == None %}
+                      <div><img id="user_img" src="/static/images/user.jpeg" width="60px" height="60px" alt="{{ post.report_user_deets.user_fname }} {{ post.report_user_deets.user_lname }}"></div>
+                      {% else %}
+                      <div><img id="user_img" src="/static/profile_pictures/{{post.report_user_deets.user_picture}}" width="60px" height="60px" alt="{{ post.report_user_deets.user_fname }} {{ post.report_user_deets.user_lname }}"></div>
+                      {% endif %}
+                  </div>
+                  <div class="col-11" >
+                    <div class="row d-flex justify-content-between">
+                      <div class="col-4 post_engagement_col">
+                        <p>{{ post.report_user_deets.user_fname }} {{ post.report_user_deets.user_lname }}</p>
+                      </div>
+                      <div class="col-5 post_engagement_col text-end">
+                      <p> {{ post.report_date }}</p>
+                      </div>
+                  </div>
+                  <p>{{ post.report_desc }}</p>
+                    <div class="row d-flex justify-content-between">
+                        <div class="col-4 post_engagement_col">
+                          <span>favorie</span>
+                          <span>comment</span>
+                        </div>
+                        <div class="col-5 post_engagement_col text-end">
+                          <span>{{post.report_cat_deets.report_category_name}}</span>
+                        </div>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                {% endif %}
+              {% endfor %}
+
+
+              <!-- <hr style="color: aliceblue;">
+              <div class="row justify-content-center gap-2 mb-3">
+                <div class="col-11">
+                  <div class="row">
+                    <div class="col-1"> <a href="#" >
+                      <img id="user_img" src="{{url_for('static', filename='images/user.jpeg')}}" alt="mdo" width="59" height="59"></a>
+                    </div>
+                    <div class="col-11">
+                      <div class="card mb-3 bgcolor" style="max-width: 540px;">
+                        <div class="row g-0">
+                          <div class="col-md-4">
+                             <img src="..." class="img-fluid rounded-start" alt="...">
+                          </div>
+                          <div class="col-md-8">
+                            <div class="card-body">
+                              <h5 class="card-title">Card title</h5>
+                              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                              <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+
+    
+
+
+              <!--End Recent Updates Session-->
+            </div>
+            {% endblock mid_content %}
+            {% block right_content %}
+            <div class="col-sm-3 tab3 pt-3 scroll d-none d-sm-none d-md-block">
+              {% with message = get_flashed_messages(with_categories=True) %}
+              {% if message %}
+              {% for cat, msg in message %}
+              {% if cat == 'error' %}
+                  <div class="alert alert-danger noround">
+                      {{ msg }}
+                  </div>
+              {% else %}
+                  <div class="alert alert-info noround">
+                      {{ msg }}
+                  </div>
+              {% endif %}
+              {% endfor %}
+              {% endif %}
+              {% endwith %}
+              <div class="my-2"><a href="{{url_for('user_emergency_services')}}">Emergency Hotlines</a></div>
+              <div>
+                <ul>
+                  <li><p>Nigeria Police Force - 098675857457</p></li>
+                  <li><p>Lagos State Ambluance Services - 09887879676</p></li>
+                  <li><p>Lagos State Fire Services - 09887879676</p></li>
+                </ul>
+              </div>
+              <div><!--Start Featured Services-->
+                <div class="my-2"><a href="{{url_for('user_featured_services')}}">Featured Services</a></div>
+                <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+                  <div class="carousel-inner">
+                    <div class="carousel-item active" data-bs-interval="4000">
+                      <div class="card bgcolor">
+                        <img src="{{url_for('static', filename='images/abc.jpg')}}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                          <h5 class="card-title">Card title</h5>
+                          <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="carousel-item" data-bs-interval="4000">
+                      <div class="card bgcolor">
+                        <img src="{{url_for('static', filename='images/def.jpg')}}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                          <h5 class="card-title">Card title</h5>
+                          <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="carousel-item">
+                      <img src="..." class="d-block w-100" alt="...">
+                    </div>
+                  </div>
+                  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+                </div>
+              </div> <!--End Featured Services-->
+              <hr>
+              <div class="my-2"><a href="{{url_for('user_upcoming_events')}}">Upcoming Events</a></div>
+              <div class="card mb-2 bg-dark">
+                <div class="card-body bgcolor">
+                  <h5 class="card-title">Card title</h5>
+                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                </div>
+              </div>
+              <div class="card mb-2 bg-dark">
+                <div class="card-body bgcolor">
+                  <h5 class="card-title">Card title</h5>
+                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                </div>
+              </div>
+              <div class="card mb-2 bg-dark">
+                <div class="card-body bgcolor">
+                  <h5 class="card-title">Card title</h5>
+                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                </div>
+              </div>
+              <hr>
+            </div>
+            {% endblock right_content %}
+          </div>
+      </div>
+      <script src="{{ url_for('static', filename='script/jquery.js')}}"></script>
+      <script>
+
+
+      </script>
+      <!-- postModal -->
+    <div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content bgcolor">
+          <div class="modal-header bg-transparent">
+            <h1 class="modal-title bg-transparent fs-5" id="exampleModalLabel">Post</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"><i class="fa-solid fa-xmark" style="color: #02834f;"></i></button>
+          </div>
+          <div class="modal-body bg-transparent">
+            <form action="" method="post">
+                <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                <textarea name="post" id="post_box" cols="45" rows="3" placeholder="Select a categiry to post" class="form-control bg-transparent text-light" autocomplete="off"></textarea>
+                <div>
+                  <div class="form-check form-switch mt-2 me-4" id="post_button">
+                    <select name="" id="" class="bg-transparent text-success custom_border">
+                      <option value="">category</option>
+                    </select>
+                    <input type="checkbox" class="btn-check" id="btn-check-2-outlined" autocomplete="off">
+                    <label class="btn btn-outline-success btn-sm" for="btn-check-2-outlined">Anonymous</label>
+                    <input type="submit" value="Post" class="btn btn-sm post_button">
+                </div>
+                  <i class="fa-solid fa-photo-film fa-lg" style="color: #02834f;"></i> &nbsp;&nbsp;&nbsp;
+                  <i class="fa-solid fa-square-poll-horizontal fa-lg" style="color: #02834f;"></i>&nbsp;&nbsp;&nbsp;
+                  <i class="fa-solid fa-location-dot fa-lg" style="color: #02834f"></i>
+                </div>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+</html>

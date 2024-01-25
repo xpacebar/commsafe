@@ -1,0 +1,54 @@
+{% extends "admin/admin_layout.html" %}
+{% block admincontent %}
+<main>
+    {% set m = get_flashed_messages(with_categories=True) %}
+    {% if m %}
+        {% for cat,msg in m %}
+        {% if cat == "error" %}
+            <div class="alert alert-danger noround col-4">
+            {{ msg }}
+            </div>
+        {% else %}
+            <div class="alert alert-info noround col-4">
+            {{ msg }}
+            </div>
+        {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Blocked Users</h1>
+        <div class="row">
+            <div class="col-11">
+                <table class="table table_striped">
+                    <thead style="color:#afdebc;">
+                        <th>S/No</th>
+                        <th>User ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Gender</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>User Status</th>
+                        <th>Action</th>
+                    </thead>
+                    {% for blocked in blocked_users %}
+                    <tbody class="text-light">
+                        <td>{{loop.index}}</td>
+                        <td>{{blocked.user_id}}</td>
+                        <td>{{blocked.user_fname}}</td>
+                        <td>{{blocked.user_lname}}</td>
+                        <td>{{blocked.user_gender}}</td>
+                        <td>{{blocked.user_email}}</td>
+                        <td>{{blocked.user_phone}}</td>
+                        <td>Blocked</td>
+                        <td><a href="/admin/block-user-reversal/{{blocked.user_id}}">Unblock</a></td>
+                    </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div> 
+</main>
+{% endblock admincontent %}
+                

@@ -1,0 +1,54 @@
+{% extends "admin/admin_layout.html" %}
+{% block admincontent %}
+<main>
+    {% set m = get_flashed_messages(with_categories=True) %}
+    {% if m %}
+        {% for cat,msg in m %}
+        {% if cat == "error" %}
+            <div class="alert alert-danger noround col-4">
+            {{ msg }}
+            </div>
+        {% else %}
+            <div class="alert alert-info noround col-4">
+            {{ msg }}
+            </div>
+        {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Restricted Reports</h1>
+        <div class="row">
+            <div class="col-11">
+                <table class="table table_striped">
+                    <thead style="color:#afdebc;">
+                        <th>S/No</th>
+                        <th>User ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Report</th>
+                        <th>Category</th>
+                        <th>Date/Time</th>
+                        <th>Restriction</th>
+                        <th>Action</th>
+                    </thead>
+                    {% for report in restricted_reports %}
+                    <tbody class="text-light">
+                        <td>{{loop.index}}</td>
+                        <td>{{report.report_user_id}}</td>
+                        <td>{{report.report_user_deets.user_fname}}</td>
+                        <td>{{report.report_user_deets.user_lname}}</td>
+                        <td>{{report.report_desc}}</td>
+                        <td>{{report.report_cat_deets.report_category_name}}</td>
+                        <td>{{report.report_date}}</td>
+                        <td>Restricted</td>
+                        <td><a href="/admin/undo-restrict-report/{{report.report_id}}">Unrestrict</a></td>
+                    </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div> 
+</main>
+{% endblock admincontent %}
+                

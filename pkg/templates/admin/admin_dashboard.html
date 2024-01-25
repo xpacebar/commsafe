@@ -1,0 +1,74 @@
+{% extends "admin/admin_layout.html" %}
+{% block admincontent %}
+<main>
+    {% set m = get_flashed_messages(with_categories=True) %}
+    {% if m %}
+        {% for cat,msg in m %}
+        {% if cat == "error" %}
+            <div class="alert alert-danger noround col-4">
+            {{ msg }}
+            </div>
+        {% else %}
+            <div class="alert alert-info noround col-4">
+            {{ msg }}
+            </div>
+        {% endif %}
+        {% endfor %}
+    {% endif %}
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Dashboard</h1>
+
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active lead">Users</li>
+        </ol>
+        <div class="row">
+            <div class="col-xl-3 col-md-6">
+                <div class="card bgcolor text-success mb-4">
+                    <div class="card-body text-center display-5">{{ all_registered_users}}</div>
+                    <div class="card-body text-center p-0"><a style="color:#02834f;text-decoration:none;" href="/admin/registered-users/">Registered Users</a></div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bgcolor text-success mb-4">
+                    <div class="card-body text-center display-5">21</div>
+                    <div class="card-body text-center p-0"><a style="color:#02834f;text-decoration:none;" href="/admin/admin-users/">Admin Users</a></div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bgcolor mb-4">
+                    <div class="card-body text-center display-5" style="color:red;">{{blocked_users}}</div>
+                    <div class="card-body text-center p-0"><a style="color:red;text-decoration:none;" href="/admin/blocked-users/">Blocked Users</a></div>
+                </div>
+            </div>
+         </div>
+
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active lead">Reports</li>
+        </ol>
+        <div class="row">
+            <div class="col-xl-3 col-md-6">
+                <div class="card bgcolor text-success mb-4">
+                    <div class="card-body text-center display-5">{{all_reports}}</div>
+                    <div class="card-body text-center p-0"><a style="color:#02834f;text-decoration:none;" href="/admin/all-reports/">Reports</a></div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bgcolor text-success mb-4">
+                    <div class="card-body text-center display-5">{{anonymous}}</div>
+                    <div class="card-body text-center p-0"><a style="color:#02834f;text-decoration:none;" href="/admin/anonymous-reports/">Anonymous Reports</a></div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bgcolor mb-4">
+                    <div class="card-body text-center display-5" style="color:red;">{{restricted_reports}}</div>
+                    <div class="card-body text-center p-0"><a style="color:red;text-decoration:none;" href="/admin/restricted-reports/">Restricted Reports</a></div>
+                </div>
+            </div>
+            
+        </div>
+            
+        
+    </div>
+</main>
+{% endblock admincontent %}
+                

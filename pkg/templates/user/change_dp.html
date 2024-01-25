@@ -1,0 +1,87 @@
+{% extends "user/userinterface.html" %}
+
+
+{% block left_content %}
+    <div class="col-sm-3 scroll d-none d-sm-none d-md-block pt-5">
+    <div class="tab1 pt-3">
+        <div class="align-center">
+            {% if deets and deets.user_picture != None %}
+            <img src="/static/profile_pictures/{{deets.user_picture}}" alt="{{deets.user_fname}}" width="76%" height="76%" class="profile_pic">
+            {% else %}
+            <img src="/static/images/user.jpeg" alt="user" width="76%" height="76%" class="profile_pic">
+            {% endif %}
+        </div>
+        <div class="text-end"><a href="">Edit Profile</a></div>
+        <div>
+            <p>Name</p>
+            <p>Email</p>
+            <p>Gender</p>
+            <p>Phone no</p>
+            <p>LGA, State</p>
+            <p>description</p>
+            <p>Operating Hours</p>
+            <p>Website</p>
+        </div>
+    </div>
+    </div>
+{% endblock left_content %}
+
+{% block otherpages %}
+{% endblock otherpages %}
+
+{% block mid_content %}
+<div class="col-sm-5 tab2 pt-4 scroll">
+ <div class="row justify-content-center gap-2 mt-3">
+    <div class="col-11">
+        <h1>Change Your Profile Picture</h1>
+        <div class="mt-5">
+        <form enctype="multipart/form-data" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token()}}">
+            <div class="mb-5">
+                <label for="dp" class="labelcol">Upload a Picuture</label>
+                <input type="file" id="dp" name="dp" required class="labelcol">
+            </div>
+            <div class="mb-3">
+                <input type="submit" class="btn choose_pic" name="btnupload" id="btnupload" value="Upload">
+            </div>
+        </form>
+        </div>
+      </div>
+  </div>
+</div>
+{% endblock mid_content %}
+{% block right_content %}
+<div class="col-sm-3 tab3 pt-3 scroll d-none d-sm-none d-md-block">
+  {% with message = get_flashed_messages(with_categories=True) %}
+  {% if message %}
+  {% for cat, msg in message %}
+  {% if cat == 'error' %}
+      <div class="alert alert-danger noround">
+          {{ msg }}
+      </div>
+  {% else %}
+      <div class="alert alert-info noround">
+          {{ msg }}
+      </div>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+
+    <div class="my-2">
+      <p>Total Views - </p>
+      <p>Total Reports - </p>
+      <p>Add Event</p>
+      <div>
+        user event lists
+      </div>
+      <p></p>
+    </div>
+
+  
+
+
+
+  </div>
+{% endblock right_content %}
+

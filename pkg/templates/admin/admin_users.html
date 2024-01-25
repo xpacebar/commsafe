@@ -1,0 +1,22 @@
+{% extends "admin/admin_layout.html" %}
+{% block admincontent %}
+<main>
+    {% set m = get_flashed_messages(with_categories=True) %}
+    {% if m %}
+        {% for cat,msg in m %}
+        {% if cat == "error" %}
+            <div class="alert alert-danger noround col-4">
+            {{ msg }}
+            </div>
+        {% else %}
+            <div class="alert alert-info noround col-4">
+            {{ msg }}
+            </div>
+        {% endif %}
+        {% endfor %}
+    {% endif %}
+    
+    
+</main>
+{% endblock admincontent %}
+                

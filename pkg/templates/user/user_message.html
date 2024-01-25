@@ -1,0 +1,65 @@
+{% extends "user/userinterface.html" %}
+
+
+{% block left_content %}
+<div class="col-sm-3 scroll d-none d-sm-none d-md-block pt-5">
+    <div class="tab1 pt-3">
+        
+    </div> 
+</div>
+{% endblock left_content %}
+
+{% block otherpages %}
+{% endblock otherpages %}
+
+{% block mid_content %}
+<div class="col-sm-5 tab2 pt-4 scroll">
+ <div class="row justify-content-center gap-2 mb-3">
+    <div class="col-10">
+        <form action="" class="message_form">
+            <div class="form-floating bgcolor">
+                <textarea class="form-control bgcolor text-light" placeholder="Messages" id="floatingTextarea2" style="height:100px;width:435px;"></textarea>
+                <label for="floatingTextarea2" class="text-light">Message</label>
+                <input type="submit" class="btn btn-sm btn-success" id="send_button" value="Send">
+            </div>
+         </form>
+        <p>Message Content here</p>
+      </div>
+  </div>
+</div>
+{% endblock mid_content %}
+{% block right_content %}
+<div class="col-sm-3 tab3 pt-3 scroll d-none d-sm-none d-md-block">
+  {% with message = get_flashed_messages(with_categories=True) %}
+  {% if message %}
+  {% for cat, msg in message %}
+  {% if cat == 'error' %}
+      <div class="alert alert-danger noround">
+          {{ msg }}
+      </div>
+  {% else %}
+      <div class="alert alert-info noround">
+          {{ msg }}
+      </div>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+
+    <div class="my-2">
+        <div class="align-center">
+            <img src="/static/images/user.jpeg" alt="user" width="76%">
+        </div>
+        <div>
+            <p> Message Account Name</p>
+            <p>Online - 2 hours ago</p>
+        </div>
+    </div>
+
+  
+
+
+
+  </div>
+{% endblock right_content %}
+

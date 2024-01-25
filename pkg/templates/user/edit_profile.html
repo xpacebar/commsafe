@@ -1,0 +1,188 @@
+{% extends "user/userinterface.html" %}
+
+
+{% block left_content %}
+    <div class="col-sm-3 scroll d-none d-sm-none d-md-block pt-5">
+    <div class="tab1 pt-3">
+        <div class="align-center">
+            {% if deets and deets.user_picture != None %}
+            <img src="/static/profile_pictures/{{deets.user_picture}}" alt="{{deets.user_fname}}" width="76%" height="76%" class="profile_pic">
+            {% else %}
+            <img src="/static/images/user.jpeg" alt="user" width="76%" height="76%" class="profile_pic">
+            {% endif %}
+        </div>
+        <div class="pic_edit"><span><a href="{{ url_for('change_dp')}}">&nbsp;&nbsp;edit</a></span></div>
+        <div class="row justify-content-center">
+            <div class="col-10 text-center">
+                <p>{{ deets.user_fname}} {{ deets.user_lname}}</p>
+                <p>{{ deets.user_email}}</p>
+                <p>{{ deets.user_gender}}</p>
+                <p>{{ deets.user_phone}}</p>
+                <p>LGA, State</p>
+                <p>description</p>
+                <!-- <p>Operating Hours</p>
+                <p>Website</p> -->
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock left_content %}
+
+{% block otherpages %}
+{% endblock otherpages %}
+
+{% block mid_content %}
+<div class="col-sm-5 tab2 pt-4 scroll">
+ <div class="row justify-content-center gap-2 mb-3">
+    <div class="col-11">
+        <h1>Edit Your Profile</h1>
+        <form enctype="multipart/form-data" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" >
+            <div class="row g-3">
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control bgcolor text-light" name="first_name" id="first_name" placeholder="First name" value="{{deets.user_fname}}">
+                        <label class="labelcol" for="first_name">First Name</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control bgcolor text-light" name="last_name" id="last_name" placeholder="Last name" value="{{deets.user_lname}}">
+                        <label class="labelcol" for="last_name">Last Name</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3">
+                <div class="col">
+                    <div class="mt-3">
+                        <input type="radio" name="gender" id="gender" value="female">&nbsp;
+                        <label class="labelcol">Female</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="gender" id="gender" value="male">&nbsp;
+                        <label class="labelcol">Male</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <select class="form-select mb-3 bgcolor" name="user_type" size="2" aria-label="Size 3 select example">
+                        <option class="bg-transparent labelcol" disabled>User Type</option>
+                        {% for type in user_type %}
+                        {% if type.usertype_id == deets.user_type_id %}
+                        <option class="bg-transparent text-light" value="{{ type.usertype_id }}" selected>{{ type.usertype_type }}</option>
+                        {% else %}
+                        <option class="bg-transparent labelcol" value="{{ type.usertype_id }}">{{ type.usertype_type }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col ms-4">
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control bgcolor text-light" name="address" placeholder="Address" style="height: 100px;" id="address">{{ deets.user_address }}</textarea>
+                        <label class="labelcol" for="address">Address</label>
+                      </div>
+                </div>
+            </div>
+            <div class="row g-3">
+                <div class="col">
+                    <select class="form-select mb-3 bgcolor" name="lga" size="2" aria-label="Size 3 select example">
+                        <option class="bg-transparent labelcol" disabled>State</option>
+                        {% for state in states %}
+                        {% if state.state_id == deets.user_state_id %}
+                        <option class="bg-transparent text-light" value="{{ state.state_id }}" selected>{{ state.state_name }}</option>
+                        {% else %}
+                        <option class="bg-transparent labelcol" value="{{ state.state_id }}">{{ state.state_name }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col">
+                    <select class="form-select mb-3 bgcolor" name="state" size="2" aria-label="Size 3 select example">
+                        <option class="bg-transparent labelcol" disabled><s>LGA</s></option>
+                        {% for lga in lgas %}
+                        {% if lga.lga_id == deets.user_lga_id %}
+                        <option class="bg-transparent text-light" value="{{ lga.lga_id }}" selected>{{ lga.lga_name }}</option>
+                        {% else %}
+                        <option class="bg-transparent labelcol" value="{{ lga.lga_id }}">{{ lga.lga_name }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row g-3">
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control bgcolor text-light" name="user_email" id="email" placeholder="Email" value="{{deets.user_email}}" disabled>
+                        <label class="labelcol" for="first_name">Email</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control text-light bgcolor" name="phone" id="phone" placeholder="Phone Number" value="{{deets.user_phone}}">
+                        <label class="labelcol" for="phone">Phone Number</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-3">
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control bgcolor text-light" name="website" id="website" placeholder="Website" value="{{deets.user_website}}">
+                        <label class="labelcol" for="website">Website</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control bgcolor text-light" name="operating_hour" id="operating_hour" placeholder="Operating Hour" value="{{deets.user_opr_hours}}">
+                        <label class="labelcol" for="operating_hour">Operating Hour</label>
+                    </div>
+                </div>
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-success">Save</button>
+            </div>
+            
+            
+              
+        </form>
+
+
+
+
+    </div>
+  </div>
+</div>
+{% endblock mid_content %}
+{% block right_content %}
+<div class="col-sm-3 tab3 pt-3 scroll d-none d-sm-none d-md-block">
+  {% with message = get_flashed_messages(with_categories=True) %}
+  {% if message %}
+  {% for cat, msg in message %}
+  {% if cat == 'error' %}
+      <div class="alert alert-danger noround">
+          {{ msg }}
+      </div>
+  {% else %}
+      <div class="alert alert-info noround">
+          {{ msg }}
+      </div>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+
+    <div class="my-2">
+      <p>Total Views - </p>
+      <p>Total Reports - </p>
+      <p>Add Event</p>
+      <div>
+        user event lists
+      </div>
+      <p></p>
+    </div>
+
+  
+
+
+
+  </div>
+{% endblock right_content %}
+

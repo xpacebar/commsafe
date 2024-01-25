@@ -1,0 +1,313 @@
+*{
+    margin:0px;
+    padding:0px;
+    box-sizing: border-box;
+    min-height: 0;
+  }
+/* nav, div{
+    border: 2px solid red;
+} */
+.bgcolor{
+  background-color:black !important;
+}
+
+.overlay{
+  background-color: rgba(0,0,0,1);
+
+}
+.navbar-custom{
+  background-color:#02834f;
+}
+
+#user_button li a{
+  font-size: 20px;
+}
+#user_button{
+  background-color: black;
+  
+}
+.brand_col{
+  color:#02834f;
+  font-weight:bold;
+}
+.home_link_col li a{
+  color:#02834f;
+  font-family: 'Amatic SC', sans-serif;
+}
+
+.menu li a{
+  color:#afbebc;
+  font-family: 'Amatic SC', sans-serif;
+}
+
+.home_link_col li a:hover{
+  color:#afbebc;
+}
+.home_brand_text{
+  color:#02834f;
+  font-family: 'Yanone Kaffeesatz', sans-serif;
+  font-size:24px;
+}
+
+textarea::-webkit-resizer{
+  display: none;
+}
+
+.home_brand_text:hover{
+  color: #afbebc;
+}
+.active{
+  color: #afbebc !important;
+}
+
+#post_button{
+  float: right;
+  position:relative;
+  bottom: 11px;
+  color:#afbebc
+  /* background:none; */
+  /* border:none; */
+}
+
+.message_form{
+  position: fixed;
+  bottom: 30px;
+
+}
+
+#send_button{
+  float: right;
+  position:relative;
+  color:#afbebc
+  /* background:none; */
+  /* border:none; */
+}
+
+
+.post_engagement_col{
+  color:#02834f;
+}
+
+
+.post_button,.choose_pic{
+  color:#02834f;
+  border:none
+}
+
+textarea{
+  
+  border-color:#afbebc !important;
+  border-radius: 5% !important;
+  margin-left: -15px;
+}
+#img1{
+  position:relative;
+  bottom: 30px;
+  left: 10px;
+}
+a{
+  text-decoration: none;
+  color:#02834f;
+  font-size: 35px;
+  font-family: 'Amatic SC', sans-serif;
+  
+}
+#forget_pass{
+  text-decoration: none;
+  font-size:12px;
+  
+}
+.outro_mess{
+  color:#02834f
+}
+
+#comm_guide{
+  color:#02834f;
+  font-family: 'Yanone Kaffeesatz', sans-serif;
+  font-size:18px;
+}
+
+#under_btn{
+  color:#02834f;
+  font-family: 'Yanone Kaffeesatz', sans-serif;
+  font-size:24px;
+  border:none
+}
+
+#comm_guide:hover{
+  color:#afdebc;
+  ;
+}
+
+a:hover{
+  color:#afdebc;
+}
+.scroll{
+    height: 600px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-align: justify;
+}
+#btn_signup,#btn_login{
+    background-color:#02834f;;
+    color:black;
+    font-weight:bolder;
+    border:none
+}
+
+#gender_choice ul li{
+  list-style-type: none
+  
+}
+
+.profile_pic{
+  border:2px solid #afbebc;
+  border-radius:15%;
+}
+
+.pic_edit{
+  position: relative;
+  bottom: 62px;
+}
+
+.custom_border{
+  border:none !important;
+}
+
+#user_img{
+  border:2px solid #afbebc;
+  position: relative;
+  border-radius:50%;
+  right:20px
+}
+
+/* #user_img{
+  border:2px solid #afbebc;
+  border-radius:50%;
+  right:20px
+} */
+.txt{
+  background-color:red;
+  font-size:xx-small;
+  position: absolute;
+  padding:3px;
+  top: 8px;
+  border-radius: 25px;
+  }
+  .labelcol{
+    color:#afdebc;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    font-size:18px;
+  }
+  .agree{
+    color:#afdebc;
+    font-size:13px;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    font-size:18px;
+    
+  }
+  .agree a{
+    text-decoration-color: #afbebc !important;
+  }
+
+  h1{
+    color:#afdebc;
+    font-family: 'Alumni Sans', sans-serif;
+    font-size:34px;
+  }
+  #signuplink, #signinlink{
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+  }
+  h5{
+    color:#afdebc;
+    font-family: 'Alumni Sans', sans-serif;
+    font-size:30px;
+  }
+  h4{
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    color:#02834f;
+    font-size:30px;
+    font-weight:bold;
+  }
+
+  h6{
+    color:#afdebc;
+    font-size:1px
+  }
+
+  #slogan{
+    font-size:30px;
+  }
+  p{
+    font-size:18px;
+    font-weight: bold;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    color:#afdebc;
+  }
+  small{
+    color:#afdebc;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+  }
+#btn_show{
+    float:right;
+    position: relative;
+    bottom: 45px;;
+    border:none;
+    color:#02834f;;
+}
+
+.id_pix{
+  float:right;
+  top: 10px;
+  border-radius:50%;
+
+
+}
+#btn_show1{
+  float:right;
+  position: relative;
+  bottom: 45px;;
+  border:none;
+  color:#02834f;
+}
+
+
+.navlink a{
+color:#02834f;;
+font-size: 17px;
+font-family: 'Amatic SC', sans-serif;
+}
+.navlink a:hover{
+    color:#afbebc
+}
+
+
+
+
+/* admin  */
+
+.admin_nav li a{
+  color:white;
+  font-size: 25px;
+}
+.admin_nav li a:hover{
+  color:#02834f;
+  background-color:black;
+}
+
+.side_nav{
+  color:white;
+  font-size: 22px;
+}
+
+.collapse_nav nav a{
+  color:white !important;
+  font-size: 23px;
+}
+.collapse_nav nav a:hover{
+  color:#02834f !important;
+}
+
+.dash_hover a h4:hover{
+  color:#02834f !important; 
+}

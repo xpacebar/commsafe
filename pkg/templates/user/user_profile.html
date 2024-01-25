@@ -1,0 +1,101 @@
+{% extends "user/userinterface.html" %}
+
+
+{% block left_content %}
+    <div class="col-sm-3 scroll d-none d-sm-none d-md-block pt-5">
+    <div class="tab1 pt-3">
+        <div class="align-center">
+            {% if deets and deets.user_picture != None %}
+            <img src="/static/profile_pictures/{{deets.user_picture}}" alt="{{deets.user_fname}}" width="76%" height="76%" class="profile_pic">
+            {% else %}
+            <img src="/static/images/user.jpeg" alt="user" width="76%" height="76%" class="profile_pic">
+            {% endif %}
+        </div>
+        <div class="pic_edit"><span><a href="{{ url_for('change_dp')}}">&nbsp;&nbsp;edit</a></span></div>
+        <div class="text-end"><a href="{{ url_for('edit_profile')}}">Edit Profile</a></div>
+        <div>
+          <p>{{ deets.user_fname}} {{ deets.user_lname}}</p>
+          <p>{{ deets.user_email}}</p>
+          <p>{{ deets.user_gender}}</p>
+          <p>{{ deets.user_phone}}</p>
+          <p>LGA, State</p>
+          <p>description</p>
+        </div>
+    </div>
+    </div>
+{% endblock left_content %}
+
+{% block otherpages %}
+{% endblock otherpages %}
+
+{% block mid_content %}
+<div class="col-sm-5 tab2 pt-4 scroll">
+  <div class="row justify-content-center gap-2 mb-3">
+    <div>
+      <p>MY REPORTS</p>
+     </div>
+     <!--User Reports-->
+     {%  for report in reports  %}
+     <hr style="color:aliceblue">
+  <div class="col-11">
+    <div class="row d-flex justify-content-between">
+      <div class="col-4 post_engagement_col">
+        <span>{{report.report_cat_deets.report_category_name}}</span>
+      </div>
+      <div class="col-5 post_engagement_col text-end">
+      <p> {{report.report_date}}</p>
+      </div>
+  </div>
+  <div class="col-12">
+    <p>{{report.report_desc}}</p>
+  </div>
+    <div class="row d-flex justify-content-between">
+        <div class="col-4 post_engagement_col">
+          <span>favorie</span>
+          <span>comment</span>
+        </div>
+        <div class="col-5 post_engagement_col text-end" id="post_engagement_border">
+          <span>location</span>
+        </div>
+    </div>
+    </div>
+  {% endfor %}
+    
+  </div>
+</div>
+{% endblock mid_content %}
+{% block right_content %}
+<div class="col-sm-3 tab3 pt-3 scroll d-none d-sm-none d-md-block">
+  {% with message = get_flashed_messages(with_categories=True) %}
+  {% if message %}
+  {% for cat, msg in message %}
+  {% if cat == 'error' %}
+      <div class="alert alert-danger noround">
+          {{ msg }}
+      </div>
+  {% else %}
+      <div class="alert alert-info noround">
+          {{ msg }}
+      </div>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+
+    <div class="my-2">
+      <p>Total Views - </p>
+      <p>Total Reports - </p>
+      <p>Add Event</p>
+      <div>
+        user event lists
+      </div>
+      <p></p>
+    </div>
+
+  
+
+
+
+  </div>
+{% endblock right_content %}
+
