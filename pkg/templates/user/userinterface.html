@@ -8,7 +8,7 @@
     <meta name="author" content="Opeoluwa Akinuliola">
     <title>Community Safety Network - Homepage</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css')}}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js')}}">
+    <link rel="application/javascript" href="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js')}}">
     <link rel="stylesheet" href="{{ url_for('static', filename='external/external.css')}}">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='animate.min.css')}}">
@@ -56,7 +56,7 @@
                 <a class="nav-link" href="{{ url_for('user_profile')}}" title="Profile"><i class="fa-regular fa-user fa-lg" style="color: #02834f;"></i></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="" title="Notifications"><i class="fa-regular fa-bell fa-lg position-relative" style="color: #02834f;"></i></a>
+                <a class=" nav-link btn" tabindex="0" role="button" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-title="Dismissible popover" data-bs-content="And here's some amazing content. It's very engaging. Right?" title="Notifications"><i class="fa-regular fa-bell fa-lg position-relative" style="color: #02834f;"></i></a>
                 <div class="txt">10</div>
               </li>
               <li class="nav-item">
@@ -90,8 +90,8 @@
                 {% block left_content %}
                 <div class="col-sm-3 scroll d-none d-sm-none d-md-block">
                   <div class="tab1 pt-3">
-                    <div class="my-2"><a href="{{ url_for('user_comm_news')}}"><i class="fa-solid fa-rss" style="color:white;font-size:22px;"></i>&nbsp;Community News</a></div>
-                    <div class="my-2"><a href="{{url_for('user_safety_alerts')}}"><i class="fa-regular fa-triangle-exclamation" style="color:white;font-size:22px;"></i>Safety Alerts</a></div>
+                    <div class="my-2"><a href="{{ url_for('user_comm_news')}}">Community News</a></div>
+                    <div class="my-2"><a href="{{url_for('user_safety_alerts')}}">Safety Alerts</a></div>
                     <div class="my-2"><a href="{{ url_for('user_community_members')}}">Community Members</a></div>
                     <div class="my-2"><a href="{{ url_for('schools_nearby')}}">Schools Nearby</a></div>
                     <div class="my-2"><a href="{{ url_for('church_nearby')}}">Church Nearby</a></div>
@@ -134,21 +134,32 @@
                       <form action="" method="post">
                         <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
                         <textarea name="post" id="post_box" cols="45" rows="3" placeholder="Select a category to post a report" class="form-control bgcolor text-light" autocomplete="off"></textarea>
-                        <div>
-                            <div class="form-check form-switch mt-2 me-4" id="post_button">
-                                <select name="category" id="category" class="bg-transparent text-success custom_border">
-                                  <option value="">category</option>
-                                  {% for category in report_category %}
-                                  <option value="{{category.report_category_id}}">{{category.report_category_name}}</option>
-                                  {% endfor %}
-                                </select>
+                        <div class="row">
+                          <div class="col-4 pt-1">
+                            <i class="fa-solid fa-photo-film fa-lg" style="color: #02834f;"></i> &nbsp;&nbsp;&nbsp;</div>
+                          <div class="form-check form-switch mt-2 me-4 col-7" id="post_button">
+                            <div>
+                              <select name="category" id="category" class="bg-transparent night_post custom_border text-center">
+                                <option value="">category</option>
+                                {% for category in report_category %}
+                                <option value="{{category.report_category_id}}">{{category.report_category_name}}</option>
+                                {% endfor %}
+                              </select> 
+                            </div>
+                            <div class="row justify-content-between">
+                              <div class="col-4">
                                 <input type="checkbox" class="btn-check" name="anonymous" id="btn-check-2-outlined" autocomplete="off">
                                 <label class="btn btn-outline-success btn-sm" for="btn-check-2-outlined">Anonymous</label>
-                                <input type="submit" value="Post" class="btn btn-sm post_button">
+                              </div>
+                              <div class="col-4">
+                                <input type="submit" value="Post" class="btn btn-sm night_post_btn">
+                              </div>
+                              
                             </div>
-                          <i class="fa-solid fa-photo-film fa-lg" style="color: #02834f;"></i> &nbsp;&nbsp;&nbsp;
+                          </div>
+                          <!-- <i class="fa-solid fa-photo-film fa-lg" style="color: #02834f;"></i> &nbsp;&nbsp;&nbsp;
                           <i class="fa-solid fa-square-poll-horizontal fa-lg" style="color: #02834f;"></i>&nbsp;&nbsp;&nbsp;
-                          <i class="fa-solid fa-location-dot fa-lg" style="color: #02834f"></i>
+                          <i class="fa-solid fa-location-dot fa-lg" style="color: #02834f"></i> -->
                     </div>
                   </form>
                 </div>
@@ -156,9 +167,6 @@
               </div>
               <!--End post report input session-->
               <!--Recent Updates Session-->
-
-
-
               {% for post in all_posts %}
                 {% if post.report_hide_user == "on" %}
                 <hr style="color: aliceblue;">
@@ -170,22 +178,62 @@
                   </div>
                   <div class="col-11" >
                     <div class="row d-flex justify-content-between">
-                      <div class="col-4 post_engagement_col">
-                        <p>Anonymous User</p>
+                      <div class="col-4">
+                        <p class="post_name_night">Anonymous</p>
                       </div>
-                      <div class="col-5 post_engagement_col text-end">
-                      <p> {{ post.report_date }}</p>
+                      <div class="col-5 text-end">
+                      <p class="post_date_col"> {{ post.report_date }}</p>
                       </div>
                   </div>
-                  <p>{{ post.report_desc }}</p>
+                  <p class="content_night">{{ post.report_desc }}</p>
                     <div class="row d-flex justify-content-between">
-                        <div class="col-4 post_engagement_col">
-                          <span>favorie</span>
-                          <span>comment</span>
+                        <div class="col-6">
+                          <p>
+                            {% if post.report_id in user_likes %}
+                            <button class="btn btn-sm btnlike liked" data-post-id="{{post.report_id}}" data-csrf="{{csrf_token()}}">Liked</button>
+                            {% else %}
+                            <button class="btn btn-sm btnlike like" data-post-id="{{post.report_id}}" data-csrf="{{csrf_token()}}">Like</button>
+                            {% endif %}
+                            <span class="like like_counter">{{ post_likes_count.get(post.report_id, 0) }}</span>
+                            &nbsp;&nbsp;<a class="btn comment" data-bs-toggle="collapse" href="#multiCollapseExample{{ loop.index }}" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Comment</a>
+                          </p>
                         </div>
-                        <div class="col-5 post_engagement_col text-end">
-                          <span>{{post.report_cat_deets.report_category_name}}</span>
+                        <div class="col-6 text-end">
+                          <p class="post_cat">{{post.report_cat_deets.report_category_name}}</p>
                         </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-9">
+                        <div class="collapse multi-collapse" id="multiCollapseExample{{ loop.index }}">
+                          <div class="card card-body bgcolor">
+                            <!--Comment Section Starts Here-->
+                            <div class="row comment_section">
+                              <div class="col-12">
+                                <input type="hidden" id="csrf_token" name="csrf_token" value="{{csrf_token()}}">
+                                <input type="hidden" id="reporr_id" name="report_id" value="{{post.report_id}}">
+                                <textarea class="bgcolor text-light" name="comment" id="comment" cols="30" rows="2"></textarea>
+                              </div>
+                              <div class="offset-7 col-5">
+                                <button id="comment_btn" type="submit" class="btn btn-sm comment_btn">Comment</button>
+                              </div>
+                              <div class="col-12">Comments</div>
+                              <duv class="col-12 text-light comment_notes">
+                                <div class="col-11 my-3" style="border-top:1px solid #afbebc;border-bottom:1px solid #afbebc">
+                                  <p>first last</p>
+                                  <p>This is meant to be a reply to the messages for each to occur</p>
+                                  <p class="text-end">Date</p>
+                                </div>
+                                <div class="col-11 my-3" style="border-top:1px solid #afbebc;border-bottom:1px solid #afbebc">
+                                  <p>first last</p>
+                                  <p>This is meant to be a reply to the messages for each to occur</p>
+                                  <p class="text-end">Date</p>
+                                </div>
+                              </duv>
+                            </div>
+                              <!--Comment Section Starts Here-->
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     </div>
                   </div>
@@ -204,31 +252,57 @@
                       {% endif %}
                   </div>
                   <div class="col-11" >
-                    <div class="row d-flex justify-content-between">
-                      <div class="col-4 post_engagement_col">
-                        <p>{{ post.report_user_deets.user_fname }} {{ post.report_user_deets.user_lname }}</p>
+                    <div class="row justify-content-between">
+                      <div class="col-4">
+                        <p class="post_name_night">{{ post.report_user_deets.user_fname }} {{ post.report_user_deets.user_lname }}</p>
                       </div>
-                      <div class="col-5 post_engagement_col text-end">
-                      <p> {{ post.report_date }}</p>
+                      <div class="col-5 text-end">
+                      <p class="post_date_col"> {{ post.report_date }}</p>
                       </div>
                   </div>
-                  <p>{{ post.report_desc }}</p>
+                  <p class="content_night">{{ post.report_desc }}</p>
                     <div class="row d-flex justify-content-between">
-                        <div class="col-4 post_engagement_col">
-                          <span>favorie</span>
-                          <span>comment</span>
+                        <div class="col-7">
+                          <p>
+                            {% if post.report_id in user_likes %}
+                            <button class="btn btn-sm btnlike liked" data-post-id="{{post.report_id}}" data-csrf="{{csrf_token()}}">Liked</button>
+                            {% else %}
+                            <button class="btn btn-sm btnlike like" data-post-id="{{post.report_id}}" data-csrf="{{csrf_token()}}">Like</button>
+                            {% endif %}
+                            <span class="like like_counter">{{ post_likes_count.get(post.report_id, 0) }}</span>
+                            &nbsp;&nbsp;<a class="btn comment" data-bs-toggle="collapse" href="#multiCollapseExample{{ loop.index }}" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Comment</a></p>
                         </div>
-                        <div class="col-5 post_engagement_col text-end">
-                          <span>{{post.report_cat_deets.report_category_name}}</span>
+                        <div class="col-5 text-end">
+                          <p class="post_cat">{{post.report_cat_deets.report_category_name}}</p>
                         </div>
                     </div>
+                    <div class="row">
+                      <div class="col-9">
+                        <div class="collapse multi-collapse" id="multiCollapseExample{{ loop.index }}">
+                          <div class="card card-body bgcolor">
+                            <!--Comment Section Starts Here-->
+                            <div class="row comment_section">
+                              <div class="col-12">
+                                <input type="hidden" id="csrf_token" name="csrf_token" value="{{csrf_token()}}">
+                                <input type="hidden" id="reporr_id" name="report_id" value="{{post.report_id}}">
+                                <textarea class="bgcolor text-light" name="comment" id="comment" cols="30" rows="2"></textarea>
+                              </div>
+                              <div class="offset-7 col-5">
+                                <button id="comment_btn" type="submit" class="btn btn-sm comment_btn">Comment</button>
+                              </div>
+                              <duv class="col-12 text-light">text arena</duv>
+                            </div>
+                             <!--Comment Section Starts Here-->
+                          </div>
+                        </div>
+                      </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
                 {% endif %}
               {% endfor %}
-
 
               <!-- <hr style="color: aliceblue;">
               <div class="row justify-content-center gap-2 mb-3">
@@ -257,14 +331,12 @@
                 </div>
               </div> -->
 
-    
-
 
               <!--End Recent Updates Session-->
             </div>
             {% endblock mid_content %}
             {% block right_content %}
-            <div class="col-sm-3 tab3 pt-3 scroll d-none d-sm-none d-md-block">
+            <div class="col-sm-3 tab1 pt-3 scroll d-none d-sm-none d-md-block">
               {% with message = get_flashed_messages(with_categories=True) %}
               {% if message %}
               {% for cat, msg in message %}
@@ -282,10 +354,10 @@
               {% endwith %}
               <div class="my-2"><a href="{{url_for('user_emergency_services')}}">Emergency Hotlines</a></div>
               <div>
-                <ul>
-                  <li><p>Nigeria Police Force - 098675857457</p></li>
-                  <li><p>Lagos State Ambluance Services - 09887879676</p></li>
-                  <li><p>Lagos State Fire Services - 09887879676</p></li>
+                <ul style="list-style-type:none;">
+                  <li><p class="info_night">Nigeria Police Force - 098675857457</p></li>
+                  <li><p class="info_night">Lagos State Ambluance Services - 09887879676</p></li>
+                  <li><p class="info_night">Lagos State Fire Services - 09887879676</p></li>
                 </ul>
               </div>
               <div><!--Start Featured Services-->
@@ -296,8 +368,8 @@
                       <div class="card bgcolor">
                         <img src="{{url_for('static', filename='images/abc.jpg')}}" class="card-img-top" alt="...">
                         <div class="card-body">
-                          <h5 class="card-title">Card title</h5>
-                          <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                          <h5 class="card-title info_night">Card title</h5>
+                          <p class="card-text info_night">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
                         </div>
                       </div>
                     </div>
@@ -305,8 +377,8 @@
                       <div class="card bgcolor">
                         <img src="{{url_for('static', filename='images/def.jpg')}}" class="card-img-top" alt="...">
                         <div class="card-body">
-                          <h5 class="card-title">Card title</h5>
-                          <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                          <h5 class="card-title info_night">Card title</h5>
+                          <p class="card-text info_night">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
                         </div>
                       </div>
                     </div>
@@ -328,20 +400,20 @@
               <div class="my-2"><a href="{{url_for('user_upcoming_events')}}">Upcoming Events</a></div>
               <div class="card mb-2 bg-dark">
                 <div class="card-body bgcolor">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                  <h5 class="card-title info_night">Card title</h5>
+                  <p class="card-text info_night">With supporting text below as a natural lead-in to additional content.</p>
                 </div>
               </div>
               <div class="card mb-2 bg-dark">
                 <div class="card-body bgcolor">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                  <h5 class="card-title info_night">Card title</h5>
+                  <p class="card-text info_night">With supporting text below as a natural lead-in to additional content.</p>
                 </div>
               </div>
               <div class="card mb-2 bg-dark">
                 <div class="card-body bgcolor">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                  <h5 class="card-title info_night">Card title</h5>
+                  <p class="card-text info_night">With supporting text below as a natural lead-in to additional content.</p>
                 </div>
               </div>
               <hr>
@@ -384,5 +456,21 @@
         </div>
       </div>
     </div>
+    <script src="{{url_for('static', filename='script/jquery.js')}}"></script>
+  <script src="{{url_for('static', filename='external/external.js')}}"></script>
+  <script>
+    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+
+    // Scroll to bottom on page load
+    document.addEventListener("DOMContentLoaded",function(){
+    document.querySelector('.message-container').scrollTop
+    = document.querySelector('.message-container').scrollHeight;
+    });
+
+    const popover = new bootstrap.Popover('.popover-dismiss', {
+        trigger: 'focus'
+      })
+</script>
 </body>
 </html>

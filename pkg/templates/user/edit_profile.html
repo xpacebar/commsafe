@@ -10,19 +10,17 @@
             {% else %}
             <img src="/static/images/user.jpeg" alt="user" width="76%" height="76%" class="profile_pic">
             {% endif %}
+            <span class="pic_edit"><a href="{{ url_for('change_dp')}}">&nbsp;&nbsp;edit</a></span>
         </div>
-        <div class="pic_edit"><span><a href="{{ url_for('change_dp')}}">&nbsp;&nbsp;edit</a></span></div>
         <div class="row justify-content-center">
-            <div class="col-10 text-center">
-                <p>{{ deets.user_fname}} {{ deets.user_lname}}</p>
-                <p>{{ deets.user_email}}</p>
-                <p>{{ deets.user_gender}}</p>
-                <p>{{ deets.user_phone}}</p>
-                <p>LGA, State</p>
-                <p>description</p>
-                <!-- <p>Operating Hours</p>
-                <p>Website</p> -->
-            </div>
+            <div class="text-start">
+                <span class="content_profile_night">{{ deets.user_fname}} {{ deets.user_lname}}</span><br>
+                <span class="content_profile_night">{{ deets.user_email}}</span><br>
+                <span class="content_profile_night">{{ deets.user_gender}}</span><br>
+                <span class="content_profile_night">{{ deets.user_phone}}</span><br>
+                <span class="content_profile_night">LGA, State</span><br>
+                <span class="content_profile_night">description</span>
+              </div>
         </div>
     </div>
     </div>

@@ -4,34 +4,26 @@
 
 
 {% block othercontent %}
-<div class="row row-cols-1 row-cols-md-3 g-4">
-    <div class="col">
-      <div class="card bgcolor">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body bgcolor">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
-        </div>
-      </div>
-    </div>
+<div class="row g-4">
+    {% for user in all_users %}
+    {% if user.user_id != deets.user_id %}
     <div class="col">
         <div class="card bgcolor">
-          <img src="..." class="card-img-top" alt="...">
-          <div class="card-body bgcolor">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+          <a href="/profile/{{user.user_id}}/">
+            {% if user.user_picture %}
+            <img src="/static/profile_pictures/{{user.user_picture}}" class="card-img-top" alt="...">
+            {% else %}
+            <img src="/static/images/user.jpeg" class="card-img-top" alt="...">
+            {% endif %}
+            <div class="card-body bgcolor">
+            <h5 class="card-title text-light">{{ user.user_fname }} {{ user.user_lname }}</h5>
+            <p class="card-text"></p>
           </div>
+        </a>
         </div>
       </div>
-      <div class="col">
-      <div class="card bgcolor">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body bgcolor">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
-        </div>
-      </div>
-    </div>
+      {% endif %}
+      {% endfor %}
   </div>
 
 {% endblock othercontent %}

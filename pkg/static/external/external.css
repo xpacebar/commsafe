@@ -19,6 +19,19 @@
   background-color:#02834f;
 }
 
+.tab1 div a{
+  color:white;
+}
+
+.night_post{
+  color:white;
+}
+
+.tab1 div a:hover{
+  color:#02834f;
+}
+
+
 #user_button li a{
   font-size: 20px;
 }
@@ -60,19 +73,38 @@ textarea::-webkit-resizer{
   color: #afbebc !important;
 }
 
-#post_button{
+.night_post_btn{
+  color:white;
+
+}
+.night_post_btn:hover{
+  background-color: #02834f;
+  color:white
+
+}
+
+/* #post_button{
   float: right;
   position:relative;
   bottom: 11px;
-  color:#afbebc
-  /* background:none; */
-  /* border:none; */
-}
+  background:none;
+} */
 
 .message_form{
   position: fixed;
-  bottom: 30px;
+  bottom: 12px;
+}
 
+.message-container {
+  height: 59vh; /* Set a fixed height for message container */
+  overflow-y: auto; /* Enable vertical scrollbar if needed */
+}
+.message {
+  margin-bottom: 5px; /* Add some margin between messages */
+}
+
+.message_font{
+  font-size:19px !important;
 }
 
 #send_button{
@@ -84,8 +116,28 @@ textarea::-webkit-resizer{
 }
 
 
-.post_engagement_col{
-  color:#02834f;
+.post_name_night{
+  color:white;
+  font-size: 22px;
+}
+
+.info_night{
+  color:white
+}
+
+.post_date_col,.post_cat{
+  color:#afbebc
+}
+
+.content_night{
+  color:white;
+  font-size:18px;
+}
+
+.night_title{
+  color:white;
+  font-size:35px;
+  font-family: 'Yanone Kaffeesatz', sans-serif;
 }
 
 
@@ -100,6 +152,32 @@ textarea{
   border-radius: 5% !important;
   margin-left: -15px;
 }
+
+.comment_section textarea::-webkit-resizer{
+  display: none;
+}
+
+.comment_btn{
+  color:#afbebc !important;
+}
+
+.comment{
+  color:#afbebc !important;
+  font-size:19px;
+  border:none
+}
+
+.like{
+  color:#afbebc !important;
+  font-size:19px;
+  border:none
+}
+.liked{
+  color:#02834f !important;
+  font-size:19px;
+  border:none
+}
+
 #img1{
   position:relative;
   bottom: 30px;
@@ -165,13 +243,32 @@ a:hover{
   border-radius:15%;
 }
 
-.pic_edit{
+.pic_edit a{
   position: relative;
-  bottom: 62px;
+  bottom:auto;
+  font-size:25px;
+  color:red !important;
+}
+
+.profile_edit a{
+  font-size:18px;
+  padding-right:10px;
+  color:red !important;
+}
+
+.content_profile_night{
+  font-size: 22px;
+  color:white;
+  font-family:'Yanone Kaffeesatz', sans-serif;
 }
 
 .custom_border{
   border:none !important;
+}
+
+#msg_img{
+  order:2px solid #afbebc;
+  border-radius:50%;
 }
 
 #user_img{
@@ -239,10 +336,8 @@ a:hover{
     font-size:30px;
   }
   p{
-    font-size:18px;
     font-weight: bold;
     font-family: 'Yanone Kaffeesatz', sans-serif;
-    color:#afdebc;
   }
   small{
     color:#afdebc;

@@ -11,17 +11,15 @@
             <img src="/static/images/user.jpeg" alt="user" width="76%" height="76%" class="profile_pic">
             {% endif %}
         </div>
-        <div class="text-end"><a href="">Edit Profile</a></div>
-        <div>
-            <p>Name</p>
-            <p>Email</p>
-            <p>Gender</p>
-            <p>Phone no</p>
-            <p>LGA, State</p>
-            <p>description</p>
-            <p>Operating Hours</p>
-            <p>Website</p>
-        </div>
+        <div class="text-end profile_edit"><a href="{{ url_for('edit_profile')}}">Edit Profile</a></div>
+        <div class="text-start">
+            <span class="content_profile_night">{{ deets.user_fname}} {{ deets.user_lname}}</span><br>
+            <span class="content_profile_night">{{ deets.user_email}}</span><br>
+            <span class="content_profile_night">{{ deets.user_gender}}</span><br>
+            <span class="content_profile_night">{{ deets.user_phone}}</span><br>
+            <span class="content_profile_night">LGA, State</span><br>
+            <span class="content_profile_night">description</span>
+          </div>
     </div>
     </div>
 {% endblock left_content %}

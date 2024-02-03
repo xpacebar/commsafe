@@ -1,0 +1,117 @@
+{% extends "user/userinterface.html" %}
+
+
+{% block left_content %}
+<div class="col-sm-3 scroll d-none d-sm-none d-md-block pt-5">
+    <div class="tab1 pt-3">
+        {% for user in all_users %}
+        {% if user.user_id != deets.user_id %}
+        <div class="row">
+            <div class="col-12 mb-2">
+                <a href="/send-message/{{user.user_id}}">
+                    <div>
+                        {% if user.user_picture %}
+                        <img id="msg_img" src="/static/profile_pictures/{{user.user_picture}}" width="60px" height="60px" alt="{{ user.user_fname }} {{ user.user_lname }}">
+                        {% else %}
+                        <img id="msg_img" src="/static/images/user.jpeg" width="60px" height="60px" alt="{{ user.user_fname }} {{ user.user_lname }}">
+                        {% endif %}
+                        <span> {{ user.user_fname }} {{ user.user_lname }}</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div> 
+</div>
+{% endblock left_content %}
+
+{% block otherpages %}
+{% endblock otherpages %}
+
+{% block mid_content %}
+<div class="col-sm-5 tab2 pt-4 scroll">
+ <div class="row justify-content-center gap-2 mb-3">
+    <div class="col-11">
+        <div class="row">
+            <div class="col-10 bgcolor">
+                <div class="form-floating  message_form">
+                    <input type="hidden" name="csrf_token" id="csrf" value="{{csrf_token()}}">
+                    <input type="hidden" id="receiver_id" value="{{receiver.user_id}}">
+
+                    <textarea class="form-control bgcolor text-light message_area" name="message" placeholder="Messages" id="floatingTextarea2" cols="45" rows="3"></textarea>
+                    <label for="floatingTextarea2" class="text-light">Message</label>
+                    <input type="submit" class="btn btn-sm btn-success" id="send_button" value="Send">
+                </div>
+          </div>
+        </div>
+    </div>
+    <div class="message-container">
+        {% if message %}
+        {% for msg in message %}
+        {% if msg.message_user1_id == deets.user_id%}
+        <div class="row">
+            <div class="col-sm-5 offset-sm-6 message py-1">
+                <input type="hidden" name="message_id" value="{{ msg.message_id }}">
+                <p class="content_night message message_font">{{msg.message_content}}</p>
+            </div>
+        </div>
+        {% else %}
+        <div class="row text-start">
+            <div class="col-sm-5 message py-1">
+                <input type="hidden" name="message_id" value="{{ msg.message_id }}">
+                <p class="content_night message message_font">{{msg.message_content}}</p>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        <div class="row">
+            <div class="col-md-5 offset-md-6 message py-1">
+                <input type="hidden" name="message_id" id="new_msg" value="">
+                <p id=display class="content_night message message_font"></p>
+            </div>
+        </div>
+            {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock mid_content %}
+{% block right_content %}
+<div class="col-sm-3 tab3 pt-3 scroll d-none d-sm-none d-md-block">
+  {% with message = get_flashed_messages(with_categories=True) %}
+  {% if message %}
+  {% for cat, msg in message %}
+  {% if cat == 'error' %}
+      <div class="alert alert-danger noround">
+          {{ msg }}
+      </div>
+  {% else %}
+      <div class="alert alert-info noround">
+          {{ msg }}
+      </div>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+
+    <div class="my-2">
+        <div class=" align-center">
+            {% if receiver and receiver.user_picture != None %}
+            <img src="/static/profile_pictures/{{receiver.user_picture}}" alt="{{deets.user_fname}}" width="76%" height="76%" class="profile_pic">
+            {% else %}
+            <img src="/static/images/user.jpeg" alt="user" width="76%" height="76%" class="profile_pic">
+            {% endif %}
+        </div>
+        <div>
+            <p class=" px-auto night_title">{{ receiver.user_fname}} {{ receiver.user_lname}}</p>
+            <p>Online - 2 hours ago</p>
+        </div>
+    </div>
+
+  
+
+
+
+  </div>
+{% endblock right_content %}
+

@@ -1,0 +1,19 @@
+        {% if message %}
+        {% for msg in message %}
+        {% if msg.message_user1_id == deets.user_id%}
+        <div class="row">
+            <div class="col-md-5 offset-md-6 message py-1">
+                <input type="hidden" name="message_id" value="{{ msg.message_id }}">
+                <p class="content_night message message_font">{{msg.message_content}}</p>
+            </div>
+        </div>
+        {% else %}
+        <div class="row text-start">
+            <div class="col-md-5 message py-1">
+                <input type="hidden" name="message_id" value="{{ msg.message_id }}">
+                <p class="content_night message message_font">{{msg.message_content}}</p>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% endif %}

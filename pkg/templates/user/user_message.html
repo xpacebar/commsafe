@@ -4,7 +4,24 @@
 {% block left_content %}
 <div class="col-sm-3 scroll d-none d-sm-none d-md-block pt-5">
     <div class="tab1 pt-3">
-        
+        {% for user in all_users %}
+        {% if user.user_id != deets.user_id %}
+        <div class="row">
+            <div class="col-12 mb-2">
+                <a href="/send-message/{{user.user_id}}">
+                    <div>
+                        {% if user.user_picture %}
+                        <img id="msg_img" src="/static/profile_pictures/{{user.user_picture}}" width="60px" height="60px" alt="{{ user.user_fname }} {{ user.user_lname }}">
+                        {% else %}
+                        <img id="msg_img" src="/static/images/user.jpeg" width="60px" height="60px" alt="{{ user.user_fname }} {{ user.user_lname }}">
+                        {% endif %}
+                        <span> {{ user.user_fname }} {{ user.user_lname }}</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
     </div> 
 </div>
 {% endblock left_content %}
@@ -15,16 +32,10 @@
 {% block mid_content %}
 <div class="col-sm-5 tab2 pt-4 scroll">
  <div class="row justify-content-center gap-2 mb-3">
-    <div class="col-10">
-        <form action="" class="message_form">
-            <div class="form-floating bgcolor">
-                <textarea class="form-control bgcolor text-light" placeholder="Messages" id="floatingTextarea2" style="height:100px;width:435px;"></textarea>
-                <label for="floatingTextarea2" class="text-light">Message</label>
-                <input type="submit" class="btn btn-sm btn-success" id="send_button" value="Send">
-            </div>
-         </form>
-        <p>Message Content here</p>
-      </div>
+    <div class="col-11">
+        
+        
+    </div>
   </div>
 </div>
 {% endblock mid_content %}
@@ -45,16 +56,6 @@
   {% endfor %}
   {% endif %}
   {% endwith %}
-
-    <div class="my-2">
-        <div class="align-center">
-            <img src="/static/images/user.jpeg" alt="user" width="76%">
-        </div>
-        <div>
-            <p> Message Account Name</p>
-            <p>Online - 2 hours ago</p>
-        </div>
-    </div>
 
   
 

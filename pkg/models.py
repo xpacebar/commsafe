@@ -27,8 +27,9 @@ class User(db.Model):
     user_usertype_deets = db.relationship("UserType", back_populates="usertype_deets")
     user_lga_deets = db.relationship('Lga', back_populates='lga_deets')
     user_state_deets = db.relationship('State', back_populates='state_deets')
-    user_message_deets = db.relationship('Message', primaryjoin="User.user_id == Message.message_user1_id", back_populates='message_deets')
     user_report_deets = db.relationship('Report', back_populates='report_user_deets')
+    user_comment_deet = db.relationship('Comment', back_populates='comment_user_deet')
+    user_like_deet = db.relationship('Like', back_populates='like_user_deet')
 
 
 class UserType(db.Model):
@@ -57,10 +58,12 @@ class Message(db.Model):
     message_id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     message_user1_id = db.Column(db.Integer(), db.ForeignKey('user.user_id'), nullable=False)
     message_user2_id = db.Column(db.Integer(), db.ForeignKey('user.user_id'), nullable=False)
-    message_content = db.Column(db.Text(), nullable = False)
+    message_content = db.Column(db.Text(), nullable=False)
     message_created_on = db.Column(db.DateTime(), default=datetime.utcnow)
     message_updated_on = db.Column(db.DateTime(), default=datetime.utcnow, onupdate=datetime.utcnow)
-    message_deets = db.relationship('User', primaryjoin="Message.message_user1_id == User.user_id", back_populates='user_message_deets')
+    user1 = db.relationship('User', foreign_keys=[message_user1_id], backref='sent_messages')
+    user2 = db.relationship('User', foreign_keys=[message_user2_id], backref='received_messages')
+
 
 
 class Report(db.Model):
@@ -77,7 +80,29 @@ class Report(db.Model):
     report_lastedit = db.Column(db.DateTime(), default=datetime.utcnow, onupdate=datetime.utcnow)
     report_user_deets = db.relationship('User', back_populates='user_report_deets')
     report_cat_deets = db.relationship('ReportCategory', back_populates='report_deets')
+    report_comment_deet = db.relationship('Comment', back_populates='comment_report_deet')
+    report_like_deet = db.relationship('Like', back_populates='like_report_deet')
 
+
+class Comment(db.Model):
+    __tablename__ = 'comment'
+    comment_id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    comment_report_id = db.Column(db.Integer(), db.ForeignKey('report.report_id'))
+    comment_user_id = db.Column(db.Integer(), db.ForeignKey('user.user_id'))
+    comment_desc = db.Column(db.Text(), nullable=False)
+    comment_datetime = db.Column(db.DateTime(), default=datetime.utcnow)
+    comment_report_deet = db.relationship('Report', back_populates='report_comment_deet')
+    comment_user_deet = db.relationship('User', back_populates='user_comment_deet')
+
+class Like(db.Model):
+    __tablename__ = "like"
+    like_id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    like_report_id = db.Column(db.Integer(), db.ForeignKey('report.report_id'))
+    like_user_id = db.Column(db.Integer(), db.ForeignKey('user.user_id'))
+    like_status = db.Column(db.Integer(), default='1')
+    like_date = db.Column(db.DateTime(), default=datetime.utcnow)
+    like_report_deet = db.relationship('Report', back_populates='report_like_deet')
+    like_user_deet = db.relationship('User', back_populates='user_like_deet')
 
 class ReportCategory(db.Model):
     __tablename__ = 'report_category'

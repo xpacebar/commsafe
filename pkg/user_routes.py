@@ -2,11 +2,11 @@ from datetime import datetime
 # import requests,json
 import os,random,string
 from functools import wraps
-from flask import Flask,render_template,url_for,request,redirect,session,flash
+from flask import Flask,render_template,url_for,request,redirect,session,flash,jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from pkg import app
 from pkg.forms import Login,SignUp,Contact
-from pkg.models import db,User,QuickContact,State,Lga,UserType,Report,ReportCategory
+from pkg.models import db,User,QuickContact,State,Lga,UserType,Report,ReportCategory,Message,Comment,Like
 
 
 # login requried decorator
@@ -156,8 +156,12 @@ def userpage():
     deets = User.query.get(id)
     all_posts = db.session.query(Report).order_by(Report.report_date.desc()).all()
     report_category = db.session.query(ReportCategory).all()
+    comments = db.session.query(Comment).all()
+    user_likes = {like.like_report_id: True for like in Like.query.filter_by(like_user_id=id).all()}
+    post_likes_count = {like.like_report_id: Like.query.filter_by(like_report_id=like.like_report_id).count() for like in Like.query.all()}
+    comments = 
     if request.method == 'GET':
-        return render_template('user/user_page.html', deets=deets,report_category=report_category,all_posts=all_posts)
+        return render_template('user/user_page.html',deets=deets,report_category=report_category,all_posts=all_posts,comments=comments,user_likes=user_likes,post_likes_count=post_likes_count)
     else:
         post = request.form.get('post')
         category = request.form.get('category')
@@ -182,6 +186,60 @@ def userpage():
             return redirect(url_for('userpage'))        
 
 
+@app.route('/comment/', methods=['POST'])
+@login_required
+def comment():
+     id = session.get('useronline')
+     report_id = request.form.get('report_id')
+     comment = request.form.get('comment')
+     if comment == "":
+         return None
+     else:
+         user_comment = Comment(
+             comment_report_id = report_id,
+             comment_user_id = id,
+             comment_desc = comment
+             )
+         db.session.add(user_comment)
+         db.session.commit()
+         data2return = {'report_id' : user_comment.comment_report_id,
+                        'user_fname' : user_comment.comment_user_deet.user_fname,
+                        'user_lname' : user_comment.comment_user_deet.user_lname,
+                        'comment' : user_comment.comment_desc,
+                        'comment_date': user_comment.comment_datetime}
+         return jsonify(data2return)
+     
+
+@app.route('/like/', methods=['POST'])
+@login_required
+def like():
+    id = session.get('useronline')
+    report_id = request.form.get('report_id')
+    status = "0"
+    like = Like(like_report_id = report_id,
+                like_user_id = id,
+                like_status = status
+                )
+    db.session.add(like)
+    db.session.commit()
+    like_count = db.session.query(Like).filter_by(like_report_id=report_id).count()
+    count = {'count': like_count}
+    return jsonify(count)
+
+@app.route('/unlike/', methods=['POST'])
+@login_required
+def unlike():
+    id = session.get('useronline')
+    report_id = request.form.get('report_id')
+    unlike = Like.query.filter_by(like_report_id=report_id, like_user_id=id).first()
+    db.session.delete(unlike)
+    db.session.commit()
+    like_count = db.session.query(Like).filter_by(like_report_id=report_id).count()
+    count = {'count': like_count}
+    return jsonify(count)
+
+
+
 @app.route('/user-profile/')
 @login_required
 def user_profile():
@@ -189,6 +247,16 @@ def user_profile():
     deets = User.query.get(id)
     reports = db.session.query(Report).filter(Report.report_user_id == id).order_by(Report.report_date.desc()).all()
     return render_template('user/user_profile.html', deets=deets, reports=reports)
+
+
+
+@app.route('/profile/<user>}/')
+@login_required
+def user_select(user):
+    id = session.get('useronline')
+    deets = User.query.get(id)
+    user_select = db.session.query(User).filter(User.user_id == user)
+    return render_template('user/user_select.html', deets=deets,user_select=user_select)
 
 @app.route('/user-community-news/')
 @login_required
@@ -216,7 +284,8 @@ def user_emergency_services():
 def user_community_members():
     id = session.get('useronline')
     deets = User.query.get(id)
-    return render_template('user/user_comm_member.html',deets=deets)
+    all_users = db.session.query(User).all()
+    return render_template('user/user_comm_member.html',deets=deets,all_users=all_users)
 
 @app.route('/user-schools-nearby/')
 @login_required
@@ -300,7 +369,50 @@ def community_feedback():
 def user_message():
     id = session.get('useronline')
     deets = User.query.get(id)
-    return render_template('user/user_message.html',deets=deets)
+    all_users = db.session.query(User).all()
+    return render_template('user/user_message.html',deets=deets,all_users=all_users)
+
+
+@app.route('/send-message/<user>/', methods=['GET','POST'])
+@login_required
+def send_message(user):
+    id = session.get('useronline')
+    deets = User.query.get(id)
+    receiver = User.query.get(user)
+    all_users = db.session.query(User).all()
+    message = Message.query.filter(
+        ((Message.message_user1_id == id) & (Message.message_user2_id == user)) |
+        ((Message.message_user1_id == user) & (Message.message_user2_id == id))
+    ).all()
+    return render_template('user/send_message.html',all_users=all_users,deets=deets,message=message,receiver=receiver)
+
+
+    
+@app.route('/send/', methods=['POST'])
+@login_required
+def send():
+    sender_id = session.get('useronline')
+    msg = request.form.get('message')
+    receiver_id = request.form.get('receiver_id')
+    if msg == "":
+        return
+    else:
+        message = Message(
+            message_content = msg,
+            message_user1_id = sender_id,
+            message_user2_id = receiver_id
+            )
+        db.session.add(message)
+        db.session.commit()
+        message_details = {
+            'id': message.message_id,
+            'sender_id': message.message_user1_id,
+            'receiver_id': message.message_user2_id,
+            'content': message.message_content
+            }
+        return jsonify(message_details)
+
+
 
 
 @app.route('/user-search-page/')
