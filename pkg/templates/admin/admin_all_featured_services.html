@@ -1,0 +1,52 @@
+{% extends "admin/admin_layout.html" %}
+{% block admincontent %}
+<main>
+    {% set m = get_flashed_messages(with_categories=True) %}
+    {% if m %}
+        {% for cat,msg in m %}
+        {% if cat == "error" %}
+            <div class="alert alert-danger noround col-4">
+            {{ msg }}
+            </div>
+        {% else %}
+            <div class="alert alert-info noround col-4">
+            {{ msg }}
+            </div>
+        {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">All Reports</h1>
+        <div class="row">
+            <div class="col-11">
+                <table class="table table_striped">
+                    <thead style="color:#afdebc;">
+                        <th>S/No</th>
+                        <th>Business Name</th>
+                        <th>Business Email</th>
+                        <th>Business Address</th>
+                        <th>Business Phone No</th>
+                        <th>Posted By</th>
+                        <th>Date/Time</th>
+                        <th>Action</th>
+                    </thead>
+                    {% for service in featured_services %}
+                    <tbody class="text-light">
+                        <td>{{loop.index}}</td>
+                        <td>{{service.featured_name}}</td>
+                        <td>{{service.featured_email}}</td>
+                        <td>{{service.featured_address}}</td>
+                        <td>{{service.featured_phone}}</td>
+                        <td>{{service.featured_admin_deets.admin_fname}}</td>
+                        <td>{{service.featured_date_created}}</td>
+                        <td><a href="/admin/delete-featured-service/{{service.featured_id}}">Remove</a></td>
+                    </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div> 
+</main>
+{% endblock admincontent %}
+                

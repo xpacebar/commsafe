@@ -4,9 +4,7 @@
     box-sizing: border-box;
     min-height: 0;
   }
-/* nav, div{
-    border: 2px solid red;
-} */
+
 .bgcolor{
   background-color:black !important;
 }
@@ -48,10 +46,6 @@
   font-family: 'Amatic SC', sans-serif;
 }
 
-.menu li a{
-  color:#afbebc;
-  font-family: 'Amatic SC', sans-serif;
-}
 
 .home_link_col li a:hover{
   color:#afbebc;
@@ -62,6 +56,12 @@
   font-size:24px;
 }
 
+
+.guide{
+  font-weight: bold;
+  font-family: 'Yanone Kaffeesatz', sans-serif;
+  color:white;
+}
 textarea::-webkit-resizer{
   display: none;
 }
@@ -96,11 +96,11 @@ textarea::-webkit-resizer{
 }
 
 .message-container {
-  height: 59vh; /* Set a fixed height for message container */
-  overflow-y: auto; /* Enable vertical scrollbar if needed */
+  height: 59vh;
+  overflow-y: auto; 
 }
 .message {
-  margin-bottom: 5px; /* Add some margin between messages */
+  margin-bottom: 5px; 
 }
 
 .message_font{
@@ -147,7 +147,6 @@ textarea::-webkit-resizer{
 }
 
 textarea{
-  
   border-color:#afbebc !important;
   border-radius: 5% !important;
   margin-left: -15px;
@@ -165,6 +164,12 @@ textarea{
   color:#afbebc !important;
   font-size:19px;
   border:none
+}
+
+.comment_header{
+  color:#afbebc !important;
+  font-size:19px;
+  font-family: 'Yanone Kaffeesatz', sans-serif; 
 }
 
 .like{
@@ -226,6 +231,13 @@ a:hover{
     overflow-y: auto;
     text-align: justify;
 }
+
+.scroll_comment{
+  max-height: 280px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align: justify;
+}
 #btn_signup,#btn_login{
     background-color:#02834f;;
     color:black;
@@ -241,6 +253,13 @@ a:hover{
 .profile_pic{
   border:2px solid #afbebc;
   border-radius:15%;
+}
+
+.visit_profile{
+  border-radius: 20%;
+  border:2px solid #afbebc;
+
+
 }
 
 .pic_edit a{
@@ -327,6 +346,10 @@ a:hover{
     font-weight:bold;
   }
 
+  .feat{
+    font-size:24px;
+  }
+
   h6{
     color:#afdebc;
     font-size:1px
@@ -334,7 +357,15 @@ a:hover{
 
   #slogan{
     font-size:30px;
+    color:#afdebc
   }
+
+  #acct_signup{
+    font-weight: bold;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    color:#afdebc
+  }
+
   p{
     font-weight: bold;
     font-family: 'Yanone Kaffeesatz', sans-serif;
@@ -376,7 +407,14 @@ font-family: 'Amatic SC', sans-serif;
     color:#afbebc
 }
 
-
+.user_nav li a{
+  color:white;
+  font-size: 35px;
+}
+.user_nav li a:hover{
+  color:#02834f;
+  background-color:black;
+}
 
 
 /* admin  */

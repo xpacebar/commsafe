@@ -2,7 +2,7 @@
 
 
 {% block left_content %}
-    <div class="col-sm-3 scroll d-none d-sm-none d-md-block pt-5">
+    <div class="col-sm-3 pt-5">
     <div class="tab1 pt-3">
         <div class="align-center">
             {% if deets and deets.user_picture != None %}
@@ -18,8 +18,15 @@
           <span class="content_profile_night">{{ deets.user_email}}</span><br>
           <span class="content_profile_night">{{ deets.user_gender}}</span><br>
           <span class="content_profile_night">{{ deets.user_phone}}</span><br>
-          <span class="content_profile_night">LGA, State</span><br>
-          <span class="content_profile_night">description</span>
+          {% if deets.user_address %}
+            <span class="content_profile_night">{{ deets.user_address }}</span><br>
+            {% endif %}
+          {% if deets.user_lga and deets.user_state %}
+          <span class="content_profile_night">{{ deets.user_lga_deets.lga_name }}, {{ deets.user_state_deets.state_name }}</span><br>
+          {% endif %}
+          {% if deets.user_desc %}
+          <span class="content_profile_night">{{ deets.user_desc }}</span><br>
+          {% endif %}
         </div>
     </div>
     </div>
@@ -30,34 +37,167 @@
 
 {% block mid_content %}
 <div class="col-sm-5 tab2 pt-4 scroll">
-  <div class="row justify-content-center gap-2 mb-3">
+  <div class="row justify-content-center scroll gap-2 mb-3">
     <div>
       <p class="night_title">MY REPORTS</p>
-     </div>
-     <!--User Reports-->
-     {%  for report in reports  %}
-     <hr style="color:aliceblue">
-  <div class="col-11">
-    <div class="row d-flex justify-content-between">
-      <div class="col-8 post_engagement_col">
-        <span class="post_cat">{{report.report_cat_deets.report_category_name}}</span>
-      </div>
-      <div class="col-4 post_engagement_col text-end">
-      <p class="post_date_col"> {{report.report_date}}</p>
-      </div>
-  </div>
-  <div class="col-12">
-    <p class="content_night">{{report.report_desc}}</p>
-  </div>
-    <div class="row d-flex justify-content-between">
-        <div class="col-4 post_engagement_col">
-          <span>favorie</span>
-          <span>comment</span>
-        </div>
     </div>
-    </div>
-  {% endfor %}
-    
+     <!--User's Reports-->
+     {% for report in all_reports %}
+              {% if report.report_file_name == None %}
+              <hr style="color: aliceblue;">
+              <div class="row justify-content-center gap-2 mb-3 report_container">
+                <div class="col-11 overlay">
+                  <div class="row">
+                  <div class="col-12" >
+                    <div class="row d-flex justify-content-between">
+                      <div class="col-6">
+                        {% if report.report_hide_user == "on" %}
+                        <p class="post_name_night">Anonymous Report</p>
+                        {% else %}
+                        <p class="post_name_night">Regular Report</p>
+                        {% endif %}
+                      </div>
+                      <div class="col-5 text-end">
+                      <p class="post_date_col">{{ report.report_date }}</p>
+                      </div>
+                  </div>
+                  <p class="content_night">{{ report.report_desc }}</p>
+                    <div class="row d-flex justify-content-between">
+                        <div class="col-7">
+                          <p>
+                            {% if report.report_id in user_likes %}
+                            <button class="btn btn-sm btnlike liked" data-post-id="{{report.report_id}}" data-csrf="{{csrf_token()}}">Liked</button>
+                            {% else %}
+                            <button class="btn btn-sm btnlike like" data-post-id="{{report.report_id}}" data-csrf="{{csrf_token()}}">Like</button>
+                            {% endif %}
+                            <span class="like like_counter">{{ report_likes_count.get(report.report_id, 0) }}</span>
+                            &nbsp;<a class="btn comment" data-bs-toggle="collapse" href="#multiCollapseExample{{ loop.index }}" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Comment&nbsp;&nbsp;<span>{{ comment_counts.get(report.report_id, 0) }}</span></a>
+                          </p>
+                        </div>
+                        <div class="col-5 text-end">
+                          <p class="post_cat">{{report.report_cat_deets.report_category_name}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-9">
+                        <div class="collapse multi-collapse" id="multiCollapseExample{{ loop.index }}">
+                          <div class="card card-body bgcolor col-11">
+                            <!--Comment Section Starts Here-->
+                            <div class="row comment_section">
+                              <div class="col-12">
+                                <input type="hidden" id="csrf_token" name="csrf_token" value="{{csrf_token()}}">
+                                <input type="hidden" id="report_id" name="report_id" value="{{report.report_id}}">
+                                <textarea class="bgcolor text-light" name="comment" id="comment" cols="22" rows="2"></textarea>
+                              </div>
+                              <div class="offset-5 col-3">
+                                <button id="comment_btn" type="submit" class="btn btn-sm comment_btn">Comment</button>
+                              </div>
+                              {% if report_comments[report.report_id] %}
+                              <div class="col-9 comment_header">Comment(s)</div>
+                              <div class="col-12 text-light comment_notes scroll_comment">
+                              {% for comment in report_comments[report.report_id] %}
+                              <div class="col-9 my-3" style="border-top:1px solid #afbebc;border-bottom:1px solid #afbebc">
+                                <p>{{comment.comment_user_deet.user_fname|title}} {{comment.comment_user_deet.user_lname|title}}</p>
+                                <p>{{ comment.comment_desc }}</p>
+                                <p class="text-end">Date</p>
+                              </div>
+                              {% endfor %}
+                              </div>
+                              {% endif %}
+                            </div>
+                              <!--Comment Section Ends Here-->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% else %}
+              <!--Report has pic -->
+              <hr style="color: aliceblue;">
+              <div class="row justify-content-center gap-2 mb-3">
+                <div class="col-11">
+                  <div class="row">
+                    <div class="col-11">
+                      <div class="card mb-3 bgcolor" style="max-width: 540px;">
+                        <div class="row">
+                          <div class="col-7">
+                            {% if report.report_hide_user == "on" %}
+                            <p class="post_name_night">Anonymous Report</p>
+                            {% else %}
+                            <p class="post_name_night">Regular Report</p>
+                            {% endif %}
+                          </div>
+                          <div class="col-5 text-end">
+                          <p class="post_date_col">{{ report.report_date }}</p>
+                          </div>
+                      </div>
+                        <div class="row g-0">
+                          <div class="col-md-4">
+                             <img src="/static/report_images/{{ report.report_file_name }}" class="img-fluid rounded-start" alt="...">
+                          </div>
+                          <div class="col-md-8">
+                            <div class="card-body">
+                              <p class="content_night">{{ report.report_desc }}</p>
+                              <p class="card-text"><small class="post_date_col">{{report.report_cat_deets.report_category_name}}</small></p>
+                              <div class="row d-flex justify-content-between">
+                                <div>
+                                  <p>
+                                    {% if report.report_id in user_likes %}
+                                    <button class="btn btn-sm btnlike liked" data-post-id="{{report.report_id}}" data-csrf="{{csrf_token()}}">Liked</button>
+                                    {% else %}
+                                    <button class="btn btn-sm btnlike like" data-post-id="{{report.report_id}}" data-csrf="{{csrf_token()}}">Like</button>
+                                    {% endif %}
+                                    <span class="like like_counter">{{ report_likes_count.get(report.report_id, 0) }}</span>
+                                    &nbsp;<a class="btn comment" data-bs-toggle="collapse" href="#multiCollapseExample{{ loop.index }}" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Comment&nbsp;&nbsp;<span>{{ comment_counts.get(report.report_id, 0) }}</span></a>
+                                  </p>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-9">
+                            <div class="collapse multi-collapse" id="multiCollapseExample{{ loop.index }}">
+                              <div class="card card-body bgcolor col-11">
+                                <!--Comment Section Starts Here-->
+                                <div class="row comment_section">
+                                  <div class="col-12">
+                                    <input type="hidden" id="csrf_token" name="csrf_token" value="{{csrf_token()}}">
+                                    <input type="hidden" id="report_id" name="report_id" value="{{report.report_id}}">
+                                    <textarea class="bgcolor text-light" name="comment" id="comment" cols="22" rows="2"></textarea>
+                                  </div>
+                                  <div class="offset-5 col-3">
+                                    <button id="comment_btn" type="submit" class="btn btn-sm comment_btn">Comment</button>
+                                  </div>
+                                  {% if report_comments[report.report_id] %}
+                                  <div class="col-9 comment_header">Comment(s)</div>
+                                  <div class="col-12 text-light comment_notes scroll_comment">
+                                  {% for comment in report_comments[report.report_id] %}
+                                  <div class="col-9 my-3" style="border-top:1px solid #afbebc;border-bottom:1px solid #afbebc">
+                                    <p>{{comment.comment_user_deet.user_fname|title}} {{comment.comment_user_deet.user_lname|title}}</p>
+                                    <p>{{ comment.comment_desc }}</p>
+                                    <p class="text-end">Date</p>
+                                  </div>
+                                  {% endfor %}
+                                  </div>
+                                  {% endif %}
+                                </div>
+                                  <!--Comment Section Ends Here-->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+              <!-- end Report has pic -->
+              {% endif %}
+              {% endfor %} 
   </div>
 </div>
 {% endblock mid_content %}
@@ -67,11 +207,11 @@
   {% if message %}
   {% for cat, msg in message %}
   {% if cat == 'error' %}
-      <div class="alert alert-danger noround">
+      <div class="alert alert-danger noround text-center">
           {{ msg }}
       </div>
   {% else %}
-      <div class="alert alert-info noround">
+      <div class="alert alert-info noround text-center">
           {{ msg }}
       </div>
   {% endif %}
@@ -80,12 +220,11 @@
   {% endwith %}
 
     <div class="my-2">
-      <p>Total Views - </p>
-      <p>Total Reports - </p>
-      <p>Add Event</p>
-      <div>
+      <p class="lead text-light">Total Reports - {{ user_reports }} </p>
+      <!-- <p>Add Event</p> -->
+      <!-- <div>
         user event lists
-      </div>
+      </div> -->
       <p></p>
     </div>
 

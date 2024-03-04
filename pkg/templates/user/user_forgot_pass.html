@@ -1,0 +1,54 @@
+{% extends "user/home_layout.html" %}
+
+{% block navhome %}
+    <a class="nav-link active" href="{{url_for('home')}}">Home</a>
+{% endblock navhome %}
+
+{% block othercontent %}
+{% endblock othercontent %}
+
+{% block logincolumn %}
+{% endblock logincolumn %}
+
+{% block signupcolumn %}
+{% endblock signupcolumn %}
+
+{% block forgot_pass %}
+<div class="row email">
+    <p class="lead text-light">Enter your Email Address</p>
+    <div class="col-md-10">
+        <div class="form-floating mb-3">
+            <input type="hidden" name="csrf_token" id="csrf" value="{{csrf_token()}}">
+            <input type="email" class="form-control bgcolor text-light" name="email" id="email" placeholder="Email" required>
+            <label class="labelcol" for="email">Email</label>
+        </div>
+        <button class="btn btn-sm btn-outline-success rounded-pill" id="email_submit">Submit</button>
+    </div>
+</div>
+<div class="row otp d-none">
+    <p class="lead text-light">An Otp has been sent to your email</p>
+    <p id="incorrect" class="d-none text-danger">Otp incorrect</p>
+    <div class="col-md-10">
+        <div class="form-floating mb-3">
+            <input type="number" class="form-control bgcolor text-light" name="otp" id="otp" placeholder="Enter Otp" required>
+            <label class="labelcol" for="otp">Enter Otp</label>
+        </div>
+        <button class="btn btn-sm btn-outline-success rounded-pill" id="pass_reset">Reset Password</button>
+    </div>
+</div>
+<div class="row pass_reset d-none">
+    <p class="lead text-light">Reset Password</p>
+    <p id="pass_inc" class="d-none text-danger">Password do not Match</p>
+    <div class="col-md-10">
+        <div class="form-floating mb-3">
+            <input type="password" class="form-control bgcolor text-light" name="pwd" id="pwd" placeholder="Enter Password" required>
+            <label class="labelcol" for="pwd">Enter Password</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="password" class="form-control bgcolor text-light" name="pwd1" id="pwd1" placeholder="Enter Password Again" required>
+            <label class="labelcol" for="pwd1">Enter Password Again</label>
+        </div>
+        <button class="btn btn-sm btn-outline-success rounded-pill" id="reset_submit">Reset</button>
+    </div>
+</div>
+{% endblock forgot_pass %}

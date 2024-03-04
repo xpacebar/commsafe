@@ -1,0 +1,183 @@
+{% extends "user/userinterface.html" %}
+
+
+
+
+{% block othercontent %}
+<div class="row justify-content-center">
+    <div class="col-md-6 mx-5">
+        {% if profile_info.user_picture %}
+        <img src="/static/profile_pictures/{{profile_info.user_picture}}" width="69%" alt="{{ profile_info.user_fname }} {{ profile_info.user_lname }}" class="visit_profile" style="margin-left:50px ;">
+        {% else %}
+        <img src="/static/images/user.jpeg" width="89%" height="89%" alt="{{ profile_info.user_fname }} {{ profile_info.user_lname }}" class="visit_profile">
+        {% endif %}
+    </div>
+    <div class="col-md-6 text-light text-center">
+        <h5 class="display-4">{{profile_info.user_fname}} {{profile_info.user_lname}}</h5>
+        <p class="lead">Date Joined - {{profile_info.user_date_reg}}</p>
+        {% if total_reports %}
+        <p class="lead">Total Reports - {{total_reports}}</p>
+        {% endif %}
+        <!-- <button class="btn btn-sm rounded-pill btn-success">Add Community Member</button>   -->
+    </div>  
+  </div>
+  {% if all_reports %}
+  <div class="row justify-content-center">
+        <div class="col-9">
+            <p class="night_title">{{profile_info.user_fname|title}}'s Reports</p>
+            {% for report in all_reports %}
+            {% if report.report_hide_user != 'on' %}
+            {% if report.report_file_name == None %}
+            <hr style="color: aliceblue;">
+            <div class="row justify-content-center gap-2 mb-3 report_container">
+            <div class="col-11 overlay">
+                <div class="row">
+                <div class="col-11" >
+                <div class="row d-flex justify-content-between">
+                    <div class="col-6">
+                    <p class="post_cat">{{report.report_cat_deets.report_category_name}}</p>
+                    </div>
+                    <div class="col-5 text-end">
+                    <p class="post_date_col">{{ report.report_date }}</p>
+                    </div>
+                </div>
+                <p class="content_night">{{ report.report_desc }}</p>
+                <div class="row d-flex justify-content-between">
+                    <div class="col-12">
+                        <p>
+                        {% if report.report_id in user_likes %}
+                        <button class="btn btn-sm btnlike liked" data-post-id="{{report.report_id}}" data-csrf="{{csrf_token()}}">Liked</button>
+                        {% else %}
+                        <button class="btn btn-sm btnlike like" data-post-id="{{report.report_id}}" data-csrf="{{csrf_token()}}">Like</button>
+                        {% endif %}
+                        <span class="like like_counter">{{ report_likes_count.get(report.report_id, 0) }}</span>
+                        &nbsp;<a class="btn comment" data-bs-toggle="collapse" href="#multiCollapseExample{{ loop.index }}" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Comment&nbsp;&nbsp;<span>{{ comment_counts.get(report.report_id, 0) }}</span></a>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-9">
+                    <div class="collapse multi-collapse" id="multiCollapseExample{{ loop.index }}">
+                        <div class="card card-body bgcolor col-11">
+                        <!--Comment Section Starts Here-->
+                        <div class="row comment_section">
+                            <div class="col-12">
+                            <input type="hidden" id="csrf_token" name="csrf_token" value="{{csrf_token()}}">
+                            <input type="hidden" id="report_id" name="report_id" value="{{report.report_id}}">
+                            <textarea class="bgcolor text-light" name="comment" id="comment" cols="24" rows="2"></textarea>
+                            </div>
+                            <div class="offset-4 col-3">
+                            <button id="comment_btn" type="submit" class="btn btn-sm comment_btn">Comment</button>
+                            </div>
+                            {% if report_comments[report.report_id] %}
+                            <div class="col-9 comment_header">Comment(s)</div>
+                            <div class="col-12 text-light comment_notes scroll_comment">
+                            {% for comment in report_comments[report.report_id] %}
+                            <div class="col-9 my-3" style="border-top:1px solid #afbebc;border-bottom:1px solid #afbebc">
+                            <p>{{comment.comment_user_deet.user_fname|title}} {{comment.comment_user_deet.user_lname|title}}</p>
+                            <p>{{ comment.comment_desc }}</p>
+                            <p class="text-end">Date</p>
+                            </div>
+                            {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                            <!--Comment Section Ends Here-->
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+                </div>
+            </div>
+            </div>
+            {% else %}
+            <!--Report has pic -->
+            <hr style="color: aliceblue;">
+            <div class="row justify-content-center gap-2 mb-3">
+                <div class="col-11">
+                    <div class="card mb-3 bgcolor" style="max-width: 560px;">
+                    <div class="row">
+                        <div class="col-6">
+                        <p class="card-text"><small class="post_date_col">{{report.report_cat_deets.report_category_name}}</small></p>
+                        </div>
+                        <div class="col-5 text-end">
+                        <p class="post_date_col">{{ report.report_date }}</p>
+                        </div>
+                    </div>
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="/static/report_images/{{ report.report_file_name }}" class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-7">
+                        <div class="card-body">
+                            <p class="content_night">{{ report.report_desc }}</p>
+                            <div class="row d-flex justify-content-between">
+                                <p>
+                                {% if report.report_id in user_likes %}
+                                <button class="btn btn-sm btnlike liked" data-post-id="{{report.report_id}}" data-csrf="{{csrf_token()}}">Liked</button>
+                                {% else %}
+                                <button class="btn btn-sm btnlike like" data-post-id="{{report.report_id}}" data-csrf="{{csrf_token()}}">Like</button>
+                                {% endif %}
+                                <span class="like like_counter">{{ report_likes_count.get(report.report_id, 0) }}</span>
+                                &nbsp;<a class="btn comment" data-bs-toggle="collapse" href="#multiCollapseExample{{ loop.index }}" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Comment&nbsp;&nbsp;<span>{{ comment_counts.get(report.report_id, 0) }}</span></a>
+                                </p>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-9">
+                        <div class="collapse multi-collapse" id="multiCollapseExample{{ loop.index }}">
+                            <div class="card card-body bgcolor col-11">
+                            <!--Comment Section Starts Here-->
+                            <div class="row comment_section">
+                                <div class="col-12">
+                                <input type="hidden" id="csrf_token" name="csrf_token" value="{{csrf_token()}}">
+                                <input type="hidden" id="report_id" name="report_id" value="{{report.report_id}}">
+                                <textarea class="bgcolor text-light" name="comment" id="comment" cols="22" rows="2"></textarea>
+                                </div>
+                                <div class="offset-4 col-3">
+                                <button id="comment_btn" type="submit" class="btn btn-sm comment_btn">Comment</button>
+                                </div>
+                                {% if report_comments[report.report_id] %}
+                                <div class="col-9 comment_header">Comment(s)</div>
+                                <div class="col-12 text-light comment_notes scroll_comment">
+                                {% for comment in report_comments[report.report_id] %}
+                                <div class="col-9 my-3" style="border-top:1px solid #afbebc;border-bottom:1px solid #afbebc">
+                                <p>{{comment.comment_user_deet.user_fname|title}} {{comment.comment_user_deet.user_lname|title}}</p>
+                                <p>{{ comment.comment_desc }}</p>
+                                <p class="text-end">Date</p>
+                                </div>
+                                {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                                <!--Comment Section Ends Here-->
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+
+            </div>
+            <!-- end Report has pic -->
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+
+        
+        </div>
+    </div>
+    {% endif %}
+
+
+{% endblock othercontent %}
+
+
+{% block mid_content %}
+{% endblock mid_content %}
+{% block right_content %}
+{% endblock right_content %}
+

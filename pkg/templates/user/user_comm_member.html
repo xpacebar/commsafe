@@ -4,18 +4,18 @@
 
 
 {% block othercontent %}
-<div class="row g-4">
+<div class="row justify-content-between g-2">
     {% for user in all_users %}
     {% if user.user_id != deets.user_id %}
     <div class="col">
         <div class="card bgcolor">
           <a href="/profile/{{user.user_id}}/">
             {% if user.user_picture %}
-            <img src="/static/profile_pictures/{{user.user_picture}}" class="card-img-top" alt="...">
+            <img src="/static/profile_pictures/{{user.user_picture}}" width="70%" alt="{{ user.user_fname }} {{ user.user_lname }}" style="margin-left:40px;">
             {% else %}
-            <img src="/static/images/user.jpeg" class="card-img-top" alt="...">
+            <img src="/static/images/user.jpeg" width="70%" alt="" style="margin-left:40px;">
             {% endif %}
-            <div class="card-body bgcolor">
+            <div class="card-body bgcolor text-center">
             <h5 class="card-title text-light">{{ user.user_fname }} {{ user.user_lname }}</h5>
             <p class="card-text"></p>
           </div>

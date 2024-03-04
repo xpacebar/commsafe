@@ -1,0 +1,46 @@
+{% extends "admin/admin_layout.html" %}
+{% block admincontent %}
+<main>
+    <div class="container-fluid px-4">
+        <div class="row justify-content-center">
+            <div class="col-5">
+                {% set m = get_flashed_messages(with_categories=True) %}
+                {% if m %}
+                    {% for cat,msg in m %}
+                    {% if cat == "error" %}
+                        <div class="alert alert-danger noround text-center">
+                        {{ msg }}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info noround text-center">
+                        {{ msg }}
+                        </div>
+                    {% endif %}
+                    {% endfor %}
+                {% endif %}
+                <h1 class="mt-4">Remove Admin User</h1>
+                <hr>
+                <form enctype="multipart/form-data" method="post">
+                    <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" >
+                    <div class="row g-3">
+                        <div class="col">
+                            <select class="form-select mb-3 bgcolor" name="email" size="2" aria-label="Size 3 select example" required>
+                                <option class="bg-transparent labelcol" value="" disabled>Select Admin User</option>
+                                {% for admin in admin_users %}
+                                {% if admin.admin_id != deets.admin_id %}
+                                <option class="bg-transparent labelcol" value="{{admin.admin_id }}">{{ admin.admin_email}}</option> 
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success">Remove</button>
+                    </div>
+                </form>        
+            </div>
+        </div>  
+    </div>
+</main>
+{% endblock admincontent %}
+                

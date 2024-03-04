@@ -23,7 +23,6 @@
                 <table class="table table_striped">
                     <thead style="color:#afdebc;">
                         <th>S/No</th>
-                        <th>User ID</th>
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Gender</th>
@@ -35,7 +34,6 @@
                     {% for user in all_registered_users %}
                     <tbody class="text-light">
                         <td>{{loop.index}}</td>
-                        <td>{{user.user_id}}</td>
                         <td>{{user.user_fname}}</td>
                         <td>{{user.user_lname}}</td>
                         <td>{{user.user_gender}}</td>

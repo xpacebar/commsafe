@@ -1,0 +1,45 @@
+{% extends "admin/admin_layout.html" %}
+{% block admincontent %}
+<main>
+    {% set m = get_flashed_messages(with_categories=True) %}
+    {% if m %}
+        {% for cat,msg in m %}
+        {% if cat == "error" %}
+            <div class="alert alert-danger noround col-4">
+            {{ msg }}
+            </div>
+        {% else %}
+            <div class="alert alert-info noround col-4">
+            {{ msg }}
+            </div>
+        {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">All User Feedback</h1>
+        <div class="row">
+            <div class="col-11">
+                <table class="table table_striped">
+                    <thead style="color:#afdebc;">
+                        <th>S/No</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Feedback Message</th>
+                        <th>Date/Time</th>
+                    {% for feedback in feedbacks %}
+                    <tbody class="text-light">
+                        <td>{{loop.index}}</td>
+                        <td>{{feedback.feedback_user_deets.user_fname}}</td>
+                        <td>{{feedback.feedback_user_deets.user_lname}}</td>
+                        <td>{{feedback.feedback_msg}}</td>
+                        <td>{{feedback.feedback_datetime}}</td>
+                    </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div> 
+</main>
+{% endblock admincontent %}
+                

@@ -2,9 +2,9 @@
 
 
 {% block left_content %}
-    <div class="col-sm-3 scroll d-none d-sm-none d-md-block pt-5">
+    <div class="col-sm-3 pt-5">
     <div class="tab1 pt-3">
-        <div class="align-center">
+        <div class="offset-1">
             {% if deets and deets.user_picture != None %}
             <img src="/static/profile_pictures/{{deets.user_picture}}" alt="{{deets.user_fname}}" width="76%" height="76%" class="profile_pic">
             {% else %}
@@ -12,14 +12,22 @@
             {% endif %}
         </div>
         <div class="text-end profile_edit"><a href="{{ url_for('edit_profile')}}">Edit Profile</a></div>
-        <div class="text-start">
+        <div class="text-start offset-1">
             <span class="content_profile_night">{{ deets.user_fname}} {{ deets.user_lname}}</span><br>
             <span class="content_profile_night">{{ deets.user_email}}</span><br>
             <span class="content_profile_night">{{ deets.user_gender}}</span><br>
             <span class="content_profile_night">{{ deets.user_phone}}</span><br>
-            <span class="content_profile_night">LGA, State</span><br>
-            <span class="content_profile_night">description</span>
-          </div>
+            {% if deets.user_address %}
+            <span class="content_profile_night">{{ deets.user_address }}</span><br>
+            {% endif %}
+            {% if deets.user_lga and deets.user_state %}
+            <span class="content_profile_night">{{ deets.user_lga_deets.lga_name }}, {{ deets.user_state_deets.state_name }}</span><br>
+            {% endif %}
+            {% if deets.user_desc %}
+            <span class="content_profile_night">{{ deets.user_desc }}</span><br>
+            {% endif %}
+        </div>
+        
     </div>
     </div>
 {% endblock left_content %}
@@ -28,7 +36,7 @@
 {% endblock otherpages %}
 
 {% block mid_content %}
-<div class="col-sm-5 tab2 pt-4 scroll">
+<div class="col-sm-5 tab2 pt-4">
  <div class="row justify-content-center gap-2 mt-3">
     <div class="col-11">
         <h1>Change Your Profile Picture</h1>
@@ -49,16 +57,16 @@
 </div>
 {% endblock mid_content %}
 {% block right_content %}
-<div class="col-sm-3 tab3 pt-3 scroll d-none d-sm-none d-md-block">
+<div class="col-sm-3 tab3 pt-3 d-none d-sm-none d-md-block">
   {% with message = get_flashed_messages(with_categories=True) %}
   {% if message %}
   {% for cat, msg in message %}
   {% if cat == 'error' %}
-      <div class="alert alert-danger noround">
+      <div class="alert alert-danger noround text-center">
           {{ msg }}
       </div>
   {% else %}
-      <div class="alert alert-info noround">
+      <div class="alert alert-info noround text-center">
           {{ msg }}
       </div>
   {% endif %}

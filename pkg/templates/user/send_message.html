@@ -114,4 +114,21 @@
 
   </div>
 {% endblock right_content %}
+{% block script %}
+<script>
+    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+
+    // Scroll to bottom on page load
+    document.addEventListener("DOMContentLoaded",function(){
+    document.querySelector('.message-container').scrollTop
+    = document.querySelector('.message-container').scrollHeight;
+    });
+
+    const popover = new bootstrap.Popover('.popover-dismiss', {
+        trigger: 'focus'
+      })
+
+</script>
+{% endblock script %}
 

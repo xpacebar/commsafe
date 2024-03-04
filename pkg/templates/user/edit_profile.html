@@ -2,9 +2,9 @@
 
 
 {% block left_content %}
-    <div class="col-sm-3 scroll d-none d-sm-none d-md-block pt-5">
+    <div class="col-sm-3 pt-5">
     <div class="tab1 pt-3">
-        <div class="align-center">
+        <div class="offset-1">
             {% if deets and deets.user_picture != None %}
             <img src="/static/profile_pictures/{{deets.user_picture}}" alt="{{deets.user_fname}}" width="76%" height="76%" class="profile_pic">
             {% else %}
@@ -12,15 +12,21 @@
             {% endif %}
             <span class="pic_edit"><a href="{{ url_for('change_dp')}}">&nbsp;&nbsp;edit</a></span>
         </div>
-        <div class="row justify-content-center">
-            <div class="text-start">
-                <span class="content_profile_night">{{ deets.user_fname}} {{ deets.user_lname}}</span><br>
-                <span class="content_profile_night">{{ deets.user_email}}</span><br>
-                <span class="content_profile_night">{{ deets.user_gender}}</span><br>
-                <span class="content_profile_night">{{ deets.user_phone}}</span><br>
-                <span class="content_profile_night">LGA, State</span><br>
-                <span class="content_profile_night">description</span>
-              </div>
+        <div class="mb-4"></div>
+        <div class="text-start offset-1">
+            <span class="content_profile_night">{{ deets.user_fname}} {{ deets.user_lname}}</span><br>
+            <span class="content_profile_night">{{ deets.user_email}}</span><br>
+            <span class="content_profile_night">{{ deets.user_gender}}</span><br>
+            <span class="content_profile_night">{{ deets.user_phone}}</span><br>
+            {% if deets.user_address != None %}
+            <span class="content_profile_night">{{ deets.user_address }}</span><br>
+            {% endif %}
+            {% if deets.user_lga_deets.lga_name and deets.user_state_deets.state_name %}
+            <span class="content_profile_night">{{ deets.user_lga_deets.lga_name }}, {{ deets.user_state_deets.state_name }}</span><br>
+            {% endif %}
+            {% if deets.user_website != None %}
+            <span class="content_profile_night">{{ deets.user_website }}</span><br>
+            {% endif %}
         </div>
     </div>
     </div>
@@ -30,12 +36,12 @@
 {% endblock otherpages %}
 
 {% block mid_content %}
-<div class="col-sm-5 tab2 pt-4 scroll">
+<div class="col-sm-5 tab2 scroll pt-4">
  <div class="row justify-content-center gap-2 mb-3">
     <div class="col-11">
         <h1>Edit Your Profile</h1>
         <form enctype="multipart/form-data" method="post">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" >
+            <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" >
             <div class="row g-3">
                 <div class="col">
                     <div class="form-floating mb-3">
@@ -53,10 +59,18 @@
             <div class="row g-3">
                 <div class="col">
                     <div class="mt-3">
-                        <input type="radio" name="gender" id="gender" value="female">&nbsp;
-                        <label class="labelcol">Female</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;
+                        {% if deets.user_gender == "female"%}
+                        <input type="radio" name="gender" id="gender" value="female" checked>&nbsp;
+                        <label class="labelcol">Female</label>&nbsp;&nbsp;&nbsp;
                         <input type="radio" name="gender" id="gender" value="male">&nbsp;
                         <label class="labelcol">Male</label>
+                        {% else %}
+                        <input type="radio" name="gender" id="gender" value="female">&nbsp;
+                        <label class="labelcol">Female</label>&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="gender" id="gender" value="male" checked>&nbsp;
+                        <label class="labelcol">Male</label>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="col">
@@ -82,8 +96,7 @@
             </div>
             <div class="row g-3">
                 <div class="col">
-                    <select class="form-select mb-3 bgcolor" name="lga" size="2" aria-label="Size 3 select example">
-                        <option class="bg-transparent labelcol" disabled>State</option>
+                    <select class="form-select mb-3 bgcolor" id="state" name="state" size="2" aria-label="Size 3 select example">
                         {% for state in states %}
                         {% if state.state_id == deets.user_state_id %}
                         <option class="bg-transparent text-light" value="{{ state.state_id }}" selected>{{ state.state_name }}</option>
@@ -94,13 +107,10 @@
                     </select>
                 </div>
                 <div class="col">
-                    <select class="form-select mb-3 bgcolor" name="state" size="2" aria-label="Size 3 select example">
-                        <option class="bg-transparent labelcol" disabled><s>LGA</s></option>
+                    <select class="form-select mb-3 bgcolor" id="lga" name="lga" size="2" aria-label="Size 3 select example">
                         {% for lga in lgas %}
                         {% if lga.lga_id == deets.user_lga_id %}
                         <option class="bg-transparent text-light" value="{{ lga.lga_id }}" selected>{{ lga.lga_name }}</option>
-                        {% else %}
-                        <option class="bg-transparent labelcol" value="{{ lga.lga_id }}">{{ lga.lga_name }}</option>
                         {% endif %}
                         {% endfor %}
                     </select>
@@ -110,7 +120,7 @@
                 <div class="col">
                     <div class="form-floating mb-3">
                         <input type="email" class="form-control bgcolor text-light" name="user_email" id="email" placeholder="Email" value="{{deets.user_email}}" disabled>
-                        <label class="labelcol" for="first_name">Email</label>
+                        <label class="labelcol" for="email">Email</label>
                     </div>
                 </div>
                 <div class="col">
@@ -137,9 +147,6 @@
             <div class="d-grid">
                 <button type="submit" class="btn btn-success">Save</button>
             </div>
-            
-            
-              
         </form>
 
 
@@ -155,11 +162,11 @@
   {% if message %}
   {% for cat, msg in message %}
   {% if cat == 'error' %}
-      <div class="alert alert-danger noround">
+      <div class="alert alert-danger noround text-center">
           {{ msg }}
       </div>
   {% else %}
-      <div class="alert alert-info noround">
+      <div class="alert alert-info noround text-center">
           {{ msg }}
       </div>
   {% endif %}

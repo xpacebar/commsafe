@@ -1,22 +1,45 @@
 {% extends "admin/admin_layout.html" %}
 {% block admincontent %}
 <main>
-    {% set m = get_flashed_messages(with_categories=True) %}
-    {% if m %}
-        {% for cat,msg in m %}
-        {% if cat == "error" %}
-            <div class="alert alert-danger noround col-4">
-            {{ msg }}
-            </div>
-        {% else %}
-            <div class="alert alert-info noround col-4">
-            {{ msg }}
-            </div>
+    <div class="container-fluid px-4">
+        {% set m = get_flashed_messages(with_categories=True) %}
+        {% if m %}
+            {% for cat,msg in m %}
+            {% if cat == "error" %}
+                <div class="alert alert-danger noround text-center">
+                {{ msg }}
+                </div>
+            {% else %}
+                <div class="alert alert-info noround text-center">
+                {{ msg }}
+                </div>
+            {% endif %}
+            {% endfor %}
         {% endif %}
-        {% endfor %}
-    {% endif %}
-    
-    
+        <h1 class="mt-4">Admin Users</h1>
+        <div class="row">
+            <div class="col-11">
+                <table class="table table_striped">
+                    <thead style="color:#afdebc;">
+                        <th>S/No</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Gender</th>
+                        <th>Email</th>
+                    </thead>
+                    {% for admin in admin_users %}
+                    <tbody class="text-light">
+                        <td>{{loop.index}}</td>
+                        <td>{{admin.admin_fname}}</td>
+                        <td>{{admin.admin_lname}}</td>
+                        <td>{{admin.admin_gender}}</td>
+                        <td>{{admin.admin_email}}</td>
+                    </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div> 
 </main>
 {% endblock admincontent %}
                 

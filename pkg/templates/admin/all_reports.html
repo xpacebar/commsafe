@@ -23,7 +23,6 @@
                 <table class="table table_striped">
                     <thead style="color:#afdebc;">
                         <th>S/No</th>
-                        <th>User ID</th>
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Report</th>
@@ -36,7 +35,6 @@
                     {% for report in all_reports %}
                     <tbody class="text-light">
                         <td>{{loop.index}}</td>
-                        <td>{{report.report_user_id}}</td>
                         <td>{{report.report_user_deets.user_fname}}</td>
                         <td>{{report.report_user_deets.user_lname}}</td>
                         <td>{{report.report_desc}}</td>

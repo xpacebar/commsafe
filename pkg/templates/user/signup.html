@@ -1,5 +1,9 @@
 {% extends "user/home_layout.html" %}
 
+{% block navhome %}
+    <a class="nav-link active" href="{{url_for('home')}}">Home</a>
+{% endblock navhome %}
+
 {% block othercontent %}
 {% endblock othercontent %}
 

@@ -8,6 +8,8 @@ class Login(FlaskForm):
     submit = SubmitField('Login')
 
 class SignUp(FlaskForm):
+    fname = StringField('First Name', validators=[DataRequired()])
+    lname = StringField('Last Name', validators=[DataRequired()])
     email = StringField('Email Address', validators=[Email(), DataRequired()])
     password = PasswordField('New Password', validators=[DataRequired()])
     confirm = PasswordField('Confirm Password', validators=[DataRequired(),EqualTo('password', message=('Password must match'))])
@@ -19,4 +21,4 @@ class Contact(FlaskForm):
     name = StringField('Your Name', validators=[DataRequired()])
     email = StringField('Email', validators=[Email(), DataRequired()])
     message = TextAreaField('Message', render_kw={"rows": 70, "cols": 11}, validators=[DataRequired()])
-    submit = SubmitField('Login')
+    submit = SubmitField('Send')

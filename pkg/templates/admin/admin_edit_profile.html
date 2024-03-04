@@ -1,0 +1,91 @@
+{% extends "admin/admin_layout.html" %}
+{% block admincontent %}
+<main>
+    <div class="container-fluid px-4">
+        {% set m = get_flashed_messages(with_categories=True) %}
+        {% if m %}
+            {% for cat,msg in m %}
+            {% if cat == "error" %}
+                <div class="alert alert-danger noround text-center">
+                {{ msg }}
+                </div>
+            {% else %}
+                <div class="alert alert-info noround text-center">
+                {{ msg }}
+                </div>
+            {% endif %}
+            {% endfor %}
+        {% endif %}
+        <div class="row justify-content-center">
+            <div class="col-9">
+                <h1 class="mt-4">Edit Profile</h1>
+                <hr>
+                <form enctype="multipart/form-data" method="post">
+                    <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" >
+                    <div class="row g-3">
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control bgcolor text-light" name="first_name" id="first_name" placeholder="First name" value="{{deets.admin_fname}}">
+                                <label class="labelcol" for="first_name">First Name</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control bgcolor text-light" name="last_name" id="last_name" placeholder="Last name" value="{{deets.admin_lname}}">
+                                <label class="labelcol" for="last_name">Last Name</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col">
+                            <div class="mt-3">
+                                &nbsp;&nbsp;&nbsp;
+                                {% if deets.admin_gender == "female"%}
+                                <input type="radio" name="gender" id="gender" value="female" checked>&nbsp;
+                                <label class="labelcol">Female</label>&nbsp;&nbsp;&nbsp;
+                                <input type="radio" name="gender" id="gender" value="male">&nbsp;
+                                <label class="labelcol">Male</label>
+                                {% elif deets.admin_gender == "male" %}
+                                <input type="radio" name="gender" id="gender" value="female">&nbsp;
+                                <label class="labelcol">Female</label>&nbsp;&nbsp;&nbsp;
+                                <input type="radio" name="gender" id="gender" value="male" checked>&nbsp;
+                                <label class="labelcol">Male</label>
+                                {% else %}
+                                <input type="radio" name="gender" id="gender" value="female">&nbsp;
+                                <label class="labelcol">Female</label>&nbsp;&nbsp;&nbsp;
+                                <input type="radio" name="gender" id="gender" value="male">&nbsp;
+                                <label class="labelcol">Male</label>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col">
+                            <select class="form-select mb-3 bgcolor" name="admin_type" size="2" aria-label="Size 3 select example" disabled>
+                                <option class="bg-transparent labelcol">Admin Type</option>
+                                {% if deets.admin_type == "super admin" %}
+                                <option class="bg-transparent text-light" value="super admin" selected>Super Admin</option>
+                                <option class="bg-transparent labelcol" value="regular">Regular Admin</option>
+                                {% else %}
+                                <option class="bg-transparent labelcol" value="super admin">Super Admin</option>
+                                <option class="bg-transparent text-light" value="regular" selected>Regular Admin</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control bgcolor text-light" name="user_email" id="email" placeholder="Email" value="{{deets.admin_email}}" disabled>
+                                <label class="labelcol" for="email">Email</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success">Save</button>
+                    </div>
+                </form>        
+            </div>
+        </div>  
+    </div>
+</main>
+{% endblock admincontent %}
+                

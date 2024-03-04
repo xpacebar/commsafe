@@ -1,0 +1,82 @@
+{% extends "admin/admin_layout.html" %}
+{% block admincontent %}
+<main>
+    <div class="container-fluid px-4">
+        <div class="row justify-content-center">
+            <div class="col-7">
+                {% set m = get_flashed_messages(with_categories=True) %}
+                {% if m %}
+                    {% for cat,msg in m %}
+                    {% if cat == "error" %}
+                        <div class="alert alert-danger noround text-center">
+                        {{ msg }}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info noround text-center">
+                        {{ msg }}
+                        </div>
+                    {% endif %}
+                    {% endfor %}
+                {% endif %}
+                <h1 class="mt-4">Add Featured Services</h1>
+                <hr>
+                <div class="text-light"><p><span style="color:red">*</span><b>All Fields Required</b></p></div>
+                <form enctype="multipart/form-data" method="post">
+                    <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}" >
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control bgcolor text-light" name="name" id="name" placeholder="Name of Service">
+                                <label class="labelcol" for="name">Name of Service</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                <textarea class="form-control bgcolor text-light" name="desc" placeholder="Desc. of Service" style="height: 100px;" id="desc"></textarea>
+                                <label class="labelcol" for="desc">Desc. of Service</label>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                <textarea class="form-control bgcolor text-light" name="address" placeholder="Address of Service" style="height: 100px;" id="address"></textarea>
+                                <label class="labelcol" for="address">Address of Service</label>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                <input type="number" class="form-control text-light bgcolor" name="phone" id="phone" placeholder="Phone Number">
+                                <label class="labelcol" for="phone">Phone Number</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control bgcolor text-light" name="email" id="email" placeholder="Email">
+                                <label class="labelcol" for="email">Email</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="fspic" class="labelcol">Upload Picuture</label>
+                            <input type="file" id="fspic" name="fspic" required class="labelcol">
+                        </div>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success">Upload Featured Servuce</button>
+                    </div>
+                </form>
+                        
+            </div>
+        </div>  
+    </div>
+</main>
+{% endblock admincontent %}
+                

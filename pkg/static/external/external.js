@@ -11,6 +11,7 @@ $(document).ready(function(){
     $('#btn_show').click(function(){
         $('#password').attr('type','text')
     })
+
     $('#btn_show').mouseleave(function(){
         $('#password').attr('type','password')
     })
@@ -22,6 +23,141 @@ $(document).ready(function(){
         $('#new_password1').attr('type','password')
     })
 
+    $('#email_submit').click(function(){
+        var email = $('#email').val()
+        var csrf = $('#csrf').val()
+        $.ajax({
+            url: '/pass/reset/',
+            type: 'POST',
+            data: {"email":email, "csrf_token":csrf},
+            success: function(resp){
+                if (resp === "success") {
+                    $('.email').addClass('d-none')
+                    $('.otp').removeClass('d-none')
+                }else {
+                    window.location.href = "/forgot-password/";
+                }
+            }
+          })
+    })
+
+
+    $('#pass_reset').click(function(){
+        var otp = $('#otp').val()
+        var csrf = $('#csrf').val()
+        var email = $('#email').val()
+        $.ajax({
+            url: '/password/reset/',
+            type: 'POST',
+            data: {"otp":otp,"email":email,"csrf_token":csrf},
+            success: function(resp){
+                if (resp === "success") {
+                    $('.otp').addClass('d-none')
+                    $('.pass_reset').removeClass('d-none')
+                }else {
+                    $('#incorrect').removeClass('d-none')
+                }
+            }
+          })
+    })
+
+    $('#otp').keydown(function(){
+        $('#incorrect').addClass('d-none') 
+    })
+
+
+
+    $('#reset_submit').click(function(){
+        var pwd = $('#pwd').val()
+        var pwd1 = $('#pwd1').val()
+        var csrf = $('#csrf').val()
+        var email = $('#email').val()
+        $.ajax({
+            url: '/reset/user/password/',
+            type: 'POST',
+            data: {"pwd":pwd, "pwd1":pwd1, "email":email, "csrf_token":csrf},
+            success: function(resp){
+                if (resp === "success") {
+                    window.location.href = "/login/";
+                }else {
+                    $('#pass_inc').removeClass('d-none')
+                }
+            }
+          })
+    })
+
+    $('#pwd').keydown(function(){
+        $('#pass_inc').addClass('d-none') 
+    })
+    $('#pwd1').keydown(function(){
+        $('#pass_inc').addClass('d-none') 
+    })
+    
+
+    $('#reset_submit').click(function(){
+        var pwd = $('#pwd').val()
+        var pwd1 = $('pwd1').val()
+        var csrf = $('#csrf').val()
+        $.ajax({
+            url: '/pass/reset/',
+            type: 'POST',
+            data: {"otp":otp, "csrf_token":csrf},
+            success: function(resp){
+                if (resp === "success") {
+                    $('.email').hide()
+                    $('.otp').removeClass('d-none')
+                }else {
+                    $('#incorrect').removeClass('d-none')
+                }
+            }
+          })
+    })
+
+
+
+
+
+    $('#state').change(function(){
+        var stateId = $(this).val()
+        var csrf = $('#csrf_token').val()
+        $.ajax({
+          url: '/state/lgas/',
+          type: 'POST',
+          data: {"state":stateId, "csrf_token":csrf},
+          beforeSend: function(){
+            $('#lga').html("")
+          },
+          success: function(resp){
+            $('#lga').append("<option class='bg-transparent text-light' value='' disabled>Select LGA</option>")
+            for (let index = 0; index < resp.length; index++){
+              $('#lga').append(`<option class="bg-transparent text-light" value="${resp[index].lga_id}">${resp[index].lga_name}</option>`)
+            }
+          }
+        })
+      })
+    
+      $('#search').click(function(){
+            var search_input = $(this).val();
+            var csrf_token = $('#csrf_token').val();
+            $.ajax({
+                type: 'POST',
+                url: '/user-search-page/',
+                data: {"search_input":search_input,"csrf_token":csrf_token},
+                success: function(data) {
+                    $('#searchResults').empty();
+                    $.each(data.users, function(index, user) {
+                        $('#searchResults').append(`<li class="text-light">${user.name} - ${user.type}</li>`);
+                    });
+                    $.each(data.reports, function(index, report) {
+                        $('#searchResults').append(`<li class="text-light">${report.name} - ${report.type}</li>`);
+                    });
+                    $.each(data.categories, function(index, category) {
+                        $('#searchResults').append(`<li class="text-light">${category.name} - ${category.type}</li>`);
+                    });
+                }
+            });
+        });
+    
 
 
     $('#send_button').click(function(){
@@ -41,22 +177,23 @@ $(document).ready(function(){
         });
     });
 
-    $('#comment_btn').click(function(){
-        var comment = $(this).closest('.comment_section').find('#comment').val();
-        var report_id = $(this).closest('.comment_section').find('#reporr_id').val();
-        var csrf_token = $(this).closest('.comment_section').find('#csrf_token').val();
+    $('.comment_btn').click(function(){
+        var commentSection = $(this).closest('.comment_section');
+        var comment = commentSection.find('#comment').val();
+        var report_id = commentSection.find('#report_id').val();
+        var csrf_token = commentSection.find('#csrf_token').val();
         var data2send = {"comment":comment, "report_id":report_id, "csrf_token":csrf_token};
-        var self = $(this);
         $.ajax({
             type: 'POST',
             url: '/comment/',
             data: data2send,
             success: function(res){
-                 var back = self.closest('.comment_section').find('.cnt').text(res.comment);
-                self.closest('.comment_section').find('#comment').val('');
+                commentSection.find('.cnt').text(res.comment);
+                commentSection.find('#comment').val('');
             }
         })
     });
+
 
     $('.btnlike').click(function(){
         var self = $(this);
@@ -91,8 +228,5 @@ $(document).ready(function(){
             })   
         }
     })
-
-
-
 
 })

@@ -4,6 +4,60 @@
 
 
 {% block othercontent %}
+        <div class="row">
+            <div class="col-10">
+                <div class="col mb-3">
+                    <h5 class="display-6">Welcome to the Feedback section of our vibrant Community Safety Network! 🎉</h5> 
+                </div>
+            <div class="col mb-3">
+                <p class="lead text-light feat">
+                    Your voice matters! 📣 We're thrilled to provide this platform for you to share your thoughts, ideas, and feedback on how we can make our community even safer and more connected. 🏡💬
+                </p>
+                <p class="lead text-light feat">
+                    This is your chance to play an active role in shaping the future of our neighborhood. Whether you have suggestions for improving our web application, ideas for new safety initiatives, or simply want to share your experiences and insights, we're all ears! 🤝
+                </p>
+            </div>
+
+            <div class="col mb-3">
+                <p class="lead text-light feat">Your feedback could range from:</p>
+                <ul class="lead text-light" style="list-style-type: none;">
+                    <div class="col mb-3">
+                        <li>🚀 New Features: &nbsp; Is there a feature you'd love to see added to our platform? Whether it's a community event calendar, a neighborhood watch dashboard, or an enhanced reporting system, we're here to listen and innovate.</li>
+                    </div>
+                    <div class="col mb-3">
+                    <li>💡 Safety Initiatives: &nbsp; Do you have ideas for organizing community safety campaigns, implementing emergency preparedness programs, or enhancing communication channels for safety alerts? Share your vision with us and let's make it happen together!</li>
+                    </div>
+                    <div class="col mb-3">
+                    <li>📝 User Experience: &nbsp; How can we improve the usability, accessibility, and overall experience of our web application? Whether it's streamlining navigation, optimizing performance, or enhancing visual design, we're committed to making your interaction with our platform seamless and enjoyable.</li>
+                    </div>
+                    <div class="col mb-3">
+                    <li>🌟 Community Engagement: &nbsp; Are there ways we can foster stronger connections, collaboration, and engagement among residents? Whether it's organizing virtual meetups, facilitating neighborhood discussions, or promoting volunteer opportunities, let's brainstorm ways to build a thriving community together.</li>
+                    </div>
+                </ul>
+            </div>
+            <div class="col mb-3">
+                <p class="lead text-light feat">Your feedback fuels our mission to create a safer, more resilient, and connected neighborhood for all. So don't hold back – share your thoughts, ideas, and suggestions with us today! Together, we can make a real difference in our community. 💪💬</p>
+                <p class="lead text-light feat">Thank you for being an integral part of our Neighborhood Safety Network family! 🌟</p>
+            </div>
+
+            </div>
+        </div>
+
+        <form action="" method="post">
+            <div class="row ">
+                <div class="col-md-7 mb-5">
+                    <div class="form-floating mb-3 ms-4">
+                        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                        <textarea class="form-control bgcolor text-light" name="feedback" placeholder="Feedback" style="height: 100px;" id="feedback"></textarea>
+                        <label class="labelcol" for="feedback">Feedback</label>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        
 {% endblock othercontent %}
 
 

@@ -50,9 +50,6 @@
               <a class="nav-link" href="{{ url_for('user_search_page')}}" title="Search"><i class="fa-solid fa-magnifying-glass fa-lg" style="color: #02834f;"></i></a>
             </li>
             <li class="nav-item d-none d-sm-none d-md-block">
-              <a class="nav-link" href="#postModal" title="Post" data-bs-toggle="modal" data-bs-target="#postModal"><i class="fa-regular fa-pen-to-square fa-lg" style="color: #02834f;"></i></a>
-            </li>
-            <li class="nav-item d-none d-sm-none d-md-block">
                 <a class="nav-link" href="{{ url_for('user_profile')}}" title="Profile"><i class="fa-regular fa-user fa-lg" style="color: #02834f;"></i></a>
               </li>
               <li class="nav-item">
@@ -60,9 +57,9 @@
                 <div class="txt">10</div>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('user_message')}}" title="Messages"><i class="fa-regular fa-envelope fa-lg position-relative" style="color: #02834f;"></i></a>
+                <a class="nav-link" href=" {{ url_for('user_message')}}" title="Messages"><i class="fa-regular fa-envelope fa-lg position-relative" style="color: #02834f;"></i></a>
                 <div class="txt">27</div>
-              </li>        
+              </li>
           </ul>
           <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
             <span class="bgcolor"><i class="fa-solid fa-arrow-right-arrow-left fa-bounce" style="color: #02834f;"></i></span>
@@ -70,14 +67,14 @@
           <div class="offcanvas offcanvas-end bg-transparent " tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
             <div class="overlay">
               <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Hello {{deets.user_fname}}!</h5>
+                <h5 class="offcanvas-title display-4" id="offcanvasDarkNavbarLabel">Hello {{deets.user_fname|title }}!</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
               </div>
               <div class="offcanvas-body menu">
-                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 menu">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 user_nav">
                   <li><a class="dropdown-item" href="{{ url_for('user_profile')}}">Profile</a></li>
-                  <li><a class="dropdown-item" href="">Change Password</a></li>
-                  <li><a class="dropdown-item" href="#">Premium Access</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('user_change_password') }}">Change Password</a></li>
+                  <!-- <li><a class="dropdown-item" href="#">Premium Access</a></li> -->
                   <li><hr></li>
                   <li><a class="dropdown-item" href="/logout">Logout</a></li>
                 </ul>
@@ -90,6 +87,8 @@
                 {% block left_content %}
                 <div class="col-sm-3 scroll d-none d-sm-none d-md-block">
                   <div class="tab1 pt-3">
+                    <!-- Most Pages on the side nav requires api/location services to function as developed-->
+
                     <div class="my-2"><a href="{{ url_for('user_comm_news')}}">Community News</a></div>
                     <div class="my-2"><a href="{{url_for('user_safety_alerts')}}">Safety Alerts</a></div>
                     <div class="my-2"><a href="{{ url_for('user_community_members')}}">Community Members</a></div>
@@ -120,7 +119,7 @@
                 {% block mid_content %}
                 <div class="col-sm-5 tab2 pt-4 scroll">
                   <!--Post report input session-->
-                  <div  class="row justify-content-center gap-2" id="post_field">
+                  <div  class="row justify-content-center gap-2">
                     <div class="col-1">
                       <div>
                         {% if deets and deets.user_picture != None %}
@@ -131,106 +130,115 @@
                       </div>
                     </div>
                     <div class="col-10">
-                      <form action="" method="post">
-                        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-                        <textarea name="post" id="post_box" cols="45" rows="3" placeholder="Select a category to post a report" class="form-control bgcolor text-light" autocomplete="off"></textarea>
+                      <form action="" method="post" enctype="multipart/form-data">
+                        <input type="hidden" id="csrf_token" name="csrf_token" value="{{csrf_token()}}">
+                        <textarea name="report" cols="45" rows="3" placeholder="Select a category to post a report" class="form-control bgcolor text-light" autocomplete="off"></textarea>
+                        <div class="row justify-content-between">
+                          <div class="col-6 pt-1">
+                            <input type="file" name="report_pic" id="report_pic" class="labelcol">
+                          </div>
+                          <div class="col-6">
+                            <select name="category" id="category" class="bg-transparent night_post custom_border text-end">
+                              <option value="">category</option>
+                              {% for category in report_category %}
+                              <option value="{{category.report_category_id}}">{{category.report_category_name}}</option>
+                              {% endfor %}
+                            </select> 
+                          </div>
+                        </div>
                         <div class="row">
-                          <div class="col-4 pt-1">
-                            <i class="fa-solid fa-photo-film fa-lg" style="color: #02834f;"></i> &nbsp;&nbsp;&nbsp;</div>
-                          <div class="form-check form-switch mt-2 me-4 col-7" id="post_button">
-                            <div>
-                              <select name="category" id="category" class="bg-transparent night_post custom_border text-center">
-                                <option value="">category</option>
-                                {% for category in report_category %}
-                                <option value="{{category.report_category_id}}">{{category.report_category_name}}</option>
-                                {% endfor %}
-                              </select> 
-                            </div>
+                          <div class="form-check form-switch mt-2 me-4" id="post_button">
                             <div class="row justify-content-between">
                               <div class="col-4">
                                 <input type="checkbox" class="btn-check" name="anonymous" id="btn-check-2-outlined" autocomplete="off">
                                 <label class="btn btn-outline-success btn-sm" for="btn-check-2-outlined">Anonymous</label>
                               </div>
                               <div class="col-4">
-                                <input type="submit" value="Post" class="btn btn-sm night_post_btn">
+                                <input type="submit" value="Post" class="btn btn-sm night_post_btn quick_report">
                               </div>
-                              
                             </div>
                           </div>
-                          <!-- <i class="fa-solid fa-photo-film fa-lg" style="color: #02834f;"></i> &nbsp;&nbsp;&nbsp;
-                          <i class="fa-solid fa-square-poll-horizontal fa-lg" style="color: #02834f;"></i>&nbsp;&nbsp;&nbsp;
-                          <i class="fa-solid fa-location-dot fa-lg" style="color: #02834f"></i> -->
-                    </div>
+
+                        </div>
                   </form>
                 </div>
-                  <div class="mb-0"><h4 class="text-center">Recent Alerts</h4></div>
+                  <div class="recent_alerts"><h4 class="text-center">Recent Alerts</h4></div>
               </div>
               <!--End post report input session-->
               <!--Recent Updates Session-->
-              {% for post in all_posts %}
-                {% if post.report_hide_user == "on" %}
-                <hr style="color: aliceblue;">
-              <div class="row justify-content-center gap-2 mb-3">
+              {% for report in all_reports %}
+              {% if report.report_file_name == None %}
+              <hr style="color: aliceblue;">
+              <div class="row justify-content-center gap-2 mb-3 report_container">
                 <div class="col-11 overlay">
                   <div class="row">
-                    <div class="col-1">
-                      <div><img id="user_img" src="/static/images/user.jpeg" width="60px" height="60px" alt="{{ post.report_user_deets.user_fname }} {{ post.report_user_deets.user_lname }}"></div>
+                  <div class="col-1">
+                  {% if report.report_hide_user == "on" %}
+                  <div><img id="user_img" src="/static/images/user.jpeg" width="60px" height="60px" alt="Anonymous"></div>
+                  {% elif report.report_user_deets.user_picture == None %}
+                  <div><a href="/profile/{{report.report_user_id}}/"><img id="user_img" src="/static/images/user.jpeg" width="60px" height="60px" alt="{{ report.report_user_deets.user_fname }} {{ report.report_user_deets.user_lname }}"></a></div>
+                  {% else %}
+                  <div><a href="/profile/{{report.report_user_id}}/"><img id="user_img" src="/static/profile_pictures/{{report.report_user_deets.user_picture}}" width="60px" height="60px" alt="{{ report.report_user_deets.user_fname }} {{ report.report_user_deets.user_lname }}"></a></div>
+                  {% endif %}
                   </div>
                   <div class="col-11" >
                     <div class="row d-flex justify-content-between">
-                      <div class="col-4">
+                      <div class="col-6">
+                        {% if report.report_hide_user == "on" %}
                         <p class="post_name_night">Anonymous</p>
+                        {% else %}
+                        <p class="post_name_night">{{ report.report_user_deets.user_fname|title }} {{ report.report_user_deets.user_lname|title }}</p>
+                        {% endif %}
                       </div>
                       <div class="col-5 text-end">
-                      <p class="post_date_col"> {{ post.report_date }}</p>
+                      <p class="post_date_col">{{ report.report_date }}</p>
                       </div>
                   </div>
-                  <p class="content_night">{{ post.report_desc }}</p>
+                  <p class="content_night">{{ report.report_desc }}</p>
                     <div class="row d-flex justify-content-between">
-                        <div class="col-6">
+                        <div class="col-7">
                           <p>
-                            {% if post.report_id in user_likes %}
-                            <button class="btn btn-sm btnlike liked" data-post-id="{{post.report_id}}" data-csrf="{{csrf_token()}}">Liked</button>
+                            {% if report.report_id in user_likes %}
+                            <button class="btn btn-sm btnlike liked" data-post-id="{{report.report_id}}" data-csrf="{{csrf_token()}}">Liked</button>
                             {% else %}
-                            <button class="btn btn-sm btnlike like" data-post-id="{{post.report_id}}" data-csrf="{{csrf_token()}}">Like</button>
+                            <button class="btn btn-sm btnlike like" data-post-id="{{report.report_id}}" data-csrf="{{csrf_token()}}">Like</button>
                             {% endif %}
-                            <span class="like like_counter">{{ post_likes_count.get(post.report_id, 0) }}</span>
-                            &nbsp;&nbsp;<a class="btn comment" data-bs-toggle="collapse" href="#multiCollapseExample{{ loop.index }}" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Comment</a>
+                            <span class="like like_counter">{{ report_likes_count.get(report.report_id, 0) }}</span>
+                            &nbsp;<a class="btn comment" data-bs-toggle="collapse" href="#multiCollapseExample{{ loop.index }}" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Comment&nbsp;&nbsp;<span>{{ comment_counts.get(report.report_id, 0) }}</span></a>
                           </p>
                         </div>
-                        <div class="col-6 text-end">
-                          <p class="post_cat">{{post.report_cat_deets.report_category_name}}</p>
+                        <div class="col-5 text-end">
+                          <p class="post_cat">{{report.report_cat_deets.report_category_name}}</p>
                         </div>
                     </div>
                     <div class="row">
                       <div class="col-9">
                         <div class="collapse multi-collapse" id="multiCollapseExample{{ loop.index }}">
-                          <div class="card card-body bgcolor">
+                          <div class="card card-body bgcolor col-11">
                             <!--Comment Section Starts Here-->
                             <div class="row comment_section">
                               <div class="col-12">
                                 <input type="hidden" id="csrf_token" name="csrf_token" value="{{csrf_token()}}">
-                                <input type="hidden" id="reporr_id" name="report_id" value="{{post.report_id}}">
-                                <textarea class="bgcolor text-light" name="comment" id="comment" cols="30" rows="2"></textarea>
+                                <input type="hidden" id="report_id" name="report_id" value="{{report.report_id}}">
+                                <textarea class="bgcolor text-light" name="comment" id="comment" cols="22" rows="2"></textarea>
                               </div>
-                              <div class="offset-7 col-5">
+                              <div class="offset-5 col-3">
                                 <button id="comment_btn" type="submit" class="btn btn-sm comment_btn">Comment</button>
                               </div>
-                              <div class="col-12">Comments</div>
-                              <duv class="col-12 text-light comment_notes">
-                                <div class="col-11 my-3" style="border-top:1px solid #afbebc;border-bottom:1px solid #afbebc">
-                                  <p>first last</p>
-                                  <p>This is meant to be a reply to the messages for each to occur</p>
-                                  <p class="text-end">Date</p>
-                                </div>
-                                <div class="col-11 my-3" style="border-top:1px solid #afbebc;border-bottom:1px solid #afbebc">
-                                  <p>first last</p>
-                                  <p>This is meant to be a reply to the messages for each to occur</p>
-                                  <p class="text-end">Date</p>
-                                </div>
-                              </duv>
+                              {% if report_comments[report.report_id] %}
+                              <div class="col-9 comment_header">Comment(s)</div>
+                              <div class="col-12 text-light comment_notes scroll_comment">
+                              {% for comment in report_comments[report.report_id] %}
+                              <div class="col-9 my-3" style="border-top:1px solid #afbebc;border-bottom:1px solid #afbebc">
+                                <p>{{comment.comment_user_deet.user_fname|title}} {{comment.comment_user_deet.user_lname|title}}</p>
+                                <p>{{ comment.comment_desc }}</p>
+                                <p class="text-end">{{ comment.comment_datetime }}</p>
+                              </div>
+                              {% endfor %}
+                              </div>
+                              {% endif %}
                             </div>
-                              <!--Comment Section Starts Here-->
+                              <!--Comment Section Ends Here-->
                           </div>
                         </div>
                       </div>
@@ -239,97 +247,99 @@
                   </div>
                 </div>
               </div>
-                {% else %}
-                <hr style="color: aliceblue;">
+              {% else %}
+              <!--Report has pic -->
+              <hr style="color: aliceblue;">
               <div class="row justify-content-center gap-2 mb-3">
                 <div class="col-11">
                   <div class="row">
                     <div class="col-1"> 
-                      {% if post.report_user_deets.user_picture == None %}
-                      <div><img id="user_img" src="/static/images/user.jpeg" width="60px" height="60px" alt="{{ post.report_user_deets.user_fname }} {{ post.report_user_deets.user_lname }}"></div>
+                      {% if report.report_hide_user == "on" %}
+                      <div><img id="user_img" src="/static/images/user.jpeg" width="60px" height="60px" alt="Anonymous"></div>
+                      {% elif report.report_user_deets.user_picture == None %}
+                      <div><a href="/profile/{{report.report_user_id}}/"><img id="user_img" src="/static/images/user.jpeg" width="60px" height="60px" alt="{{ report.report_user_deets.user_fname }} {{ report.report_user_deets.user_lname }}"></a></div>
                       {% else %}
-                      <div><img id="user_img" src="/static/profile_pictures/{{post.report_user_deets.user_picture}}" width="60px" height="60px" alt="{{ post.report_user_deets.user_fname }} {{ post.report_user_deets.user_lname }}"></div>
+                      <div><a href="/profile/{{report.report_user_id}}/"><img id="user_img" src="/static/profile_pictures/{{report.report_user_deets.user_picture}}" width="60px" height="60px" alt="{{ report.report_user_deets.user_fname }} {{ report.report_user_deets.user_lname }}"></a></div>
                       {% endif %}
-                  </div>
-                  <div class="col-11" >
-                    <div class="row justify-content-between">
-                      <div class="col-4">
-                        <p class="post_name_night">{{ post.report_user_deets.user_fname }} {{ post.report_user_deets.user_lname }}</p>
-                      </div>
-                      <div class="col-5 text-end">
-                      <p class="post_date_col"> {{ post.report_date }}</p>
-                      </div>
-                  </div>
-                  <p class="content_night">{{ post.report_desc }}</p>
-                    <div class="row d-flex justify-content-between">
-                        <div class="col-7">
-                          <p>
-                            {% if post.report_id in user_likes %}
-                            <button class="btn btn-sm btnlike liked" data-post-id="{{post.report_id}}" data-csrf="{{csrf_token()}}">Liked</button>
-                            {% else %}
-                            <button class="btn btn-sm btnlike like" data-post-id="{{post.report_id}}" data-csrf="{{csrf_token()}}">Like</button>
-                            {% endif %}
-                            <span class="like like_counter">{{ post_likes_count.get(post.report_id, 0) }}</span>
-                            &nbsp;&nbsp;<a class="btn comment" data-bs-toggle="collapse" href="#multiCollapseExample{{ loop.index }}" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Comment</a></p>
-                        </div>
-                        <div class="col-5 text-end">
-                          <p class="post_cat">{{post.report_cat_deets.report_category_name}}</p>
-                        </div>
                     </div>
-                    <div class="row">
-                      <div class="col-9">
-                        <div class="collapse multi-collapse" id="multiCollapseExample{{ loop.index }}">
-                          <div class="card card-body bgcolor">
-                            <!--Comment Section Starts Here-->
-                            <div class="row comment_section">
-                              <div class="col-12">
-                                <input type="hidden" id="csrf_token" name="csrf_token" value="{{csrf_token()}}">
-                                <input type="hidden" id="reporr_id" name="report_id" value="{{post.report_id}}">
-                                <textarea class="bgcolor text-light" name="comment" id="comment" cols="30" rows="2"></textarea>
-                              </div>
-                              <div class="offset-7 col-5">
-                                <button id="comment_btn" type="submit" class="btn btn-sm comment_btn">Comment</button>
-                              </div>
-                              <duv class="col-12 text-light">text arena</duv>
+                    <div class="col-11">
+                      <div class="card mb-3 bgcolor" style="max-width: 540px;">
+                        <div class="row d-flex justify-content-between">
+                          <div class="col-7">
+                            {% if report.report_hide_user == "on" %}
+                            <p class="post_name_night">Anonymous</p>
+                            {% else %}
+                            <p class="post_name_night">{{ report.report_user_deets.user_fname|title }} {{ report.report_user_deets.user_lname|title }}</p>
+                            {% endif %}
+                          </div>
+                          <div class="col-5 text-end">
+                          <p class="post_date_col">{{ report.report_date }}</p>
+                          </div>
+                      </div>
+                        <div class="row g-0">
+                          <div class="col-md-4">
+                             <img src="/static/report_images/{{ report.report_file_name }}" class="img-fluid rounded-start" alt="...">
+                          </div>
+                          <div class="col-md-8">
+                            <div class="card-body">
+                              <p class="content_night">{{ report.report_desc }}</p>
+                              <p class="card-text"><small class="post_date_col">{{report.report_cat_deets.report_category_name}}</small></p>
+                              <div class="row d-flex justify-content-between">
+                                <div>
+                                  <p>
+                                    {% if report.report_id in user_likes %}
+                                    <button class="btn btn-sm btnlike liked" data-post-id="{{report.report_id}}" data-csrf="{{csrf_token()}}">Liked</button>
+                                    {% else %}
+                                    <button class="btn btn-sm btnlike like" data-post-id="{{report.report_id}}" data-csrf="{{csrf_token()}}">Like</button>
+                                    {% endif %}
+                                    <span class="like like_counter">{{ report_likes_count.get(report.report_id, 0) }}</span>
+                                    &nbsp;<a class="btn comment" data-bs-toggle="collapse" href="#multiCollapseExample{{ loop.index }}" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Comment&nbsp;&nbsp;<span>{{ comment_counts.get(report.report_id, 0) }}</span></a>
+                                  </p>
+                                </div>
                             </div>
-                             <!--Comment Section Starts Here-->
                           </div>
                         </div>
-                      </div>
+                        <div class="row">
+                          <div class="col-9">
+                            <div class="collapse multi-collapse" id="multiCollapseExample{{ loop.index }}">
+                              <div class="card card-body bgcolor col-11">
+                                <!--Comment Section Starts Here-->
+                                <div class="row comment_section">
+                                  <div class="col-12">
+                                    <input type="hidden" id="csrf_token" name="csrf_token" value="{{csrf_token()}}">
+                                    <input type="hidden" id="report_id" name="report_id" value="{{report.report_id}}">
+                                    <textarea class="bgcolor text-light" name="comment" id="comment" cols="22" rows="2"></textarea>
+                                  </div>
+                                  <div class="offset-5 col-3">
+                                    <button id="comment_btn" type="submit" class="btn btn-sm comment_btn">Comment</button>
+                                  </div>
+                                  {% if report_comments[report.report_id] %}
+                                  <div class="col-9 comment_header">Comment(s)</div>
+                                  <div class="col-12 text-light comment_notes scroll_comment">
+                                  {% for comment in report_comments[report.report_id] %}
+                                  <div class="col-9 my-3" style="border-top:1px solid #afbebc;border-bottom:1px solid #afbebc">
+                                    <p>{{comment.comment_user_deet.user_fname|title}} {{comment.comment_user_deet.user_lname|title}}</p>
+                                    <p>{{ comment.comment_desc }}</p>
+                                    <p class="text-end">{{ comment.comment_datetime }}</p>
+                                  </div>
+                                  {% endfor %}
+                                  </div>
+                                  {% endif %}
+                                </div>
+                                  <!--Comment Section Ends Here-->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-                {% endif %}
-              {% endfor %}
-
-              <!-- <hr style="color: aliceblue;">
-              <div class="row justify-content-center gap-2 mb-3">
-                <div class="col-11">
-                  <div class="row">
-                    <div class="col-1"> <a href="#" >
-                      <img id="user_img" src="{{url_for('static', filename='images/user.jpeg')}}" alt="mdo" width="59" height="59"></a>
-                    </div>
-                    <div class="col-11">
-                      <div class="card mb-3 bgcolor" style="max-width: 540px;">
-                        <div class="row g-0">
-                          <div class="col-md-4">
-                             <img src="..." class="img-fluid rounded-start" alt="...">
-                          </div>
-                          <div class="col-md-8">
-                            <div class="card-body">
-                              <h5 class="card-title">Card title</h5>
-                              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                              <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
+            </div>
+              <!-- end Report has pic -->
+              {% endif %}
+              {% endfor %} 
 
 
               <!--End Recent Updates Session-->
@@ -341,50 +351,54 @@
               {% if message %}
               {% for cat, msg in message %}
               {% if cat == 'error' %}
-                  <div class="alert alert-danger noround">
+                  <div class="alert alert-danger noround text-center">
                       {{ msg }}
                   </div>
               {% else %}
-                  <div class="alert alert-info noround">
+                  <div class="alert alert-info noround text-center">
                       {{ msg }}
                   </div>
               {% endif %}
               {% endfor %}
               {% endif %}
               {% endwith %}
-              <div class="my-2"><a href="{{url_for('user_emergency_services')}}">Emergency Hotlines</a></div>
+              <div class="my-2"><a href=" {{url_for('user_emergency_services')}} ">Emergency Hotlines</a></div>
               <div>
                 <ul style="list-style-type:none;">
-                  <li><p class="info_night">Nigeria Police Force - 098675857457</p></li>
-                  <li><p class="info_night">Lagos State Ambluance Services - 09887879676</p></li>
-                  <li><p class="info_night">Lagos State Fire Services - 09887879676</p></li>
+                  <li><p class="info_night">Nigeria Police Force - 08033011052</p></li>
+                  <li><p class="info_night">Lagos State Ambluance Services - 08097204158</p></li>
+                  <li><p class="info_night">Lagos State Fire Services - 08023321770</p></li>
                 </ul>
               </div>
               <div><!--Start Featured Services-->
                 <div class="my-2"><a href="{{url_for('user_featured_services')}}">Featured Services</a></div>
                 <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
                   <div class="carousel-inner">
+                    {% for service in top_featured_services %}
+                    {% if loop.index == 1 %}
                     <div class="carousel-item active" data-bs-interval="4000">
                       <div class="card bgcolor">
-                        <img src="{{url_for('static', filename='images/abc.jpg')}}" class="card-img-top" alt="...">
+                        <img src="/static/featured_images/{{service.featured_img_file}}" class="card-img-top" alt="...">
                         <div class="card-body">
-                          <h5 class="card-title info_night">Card title</h5>
-                          <p class="card-text info_night">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                          <h5 class="card-title info_night display-6">{{ service.featured_name }}</h5>
+                          <p class="card-text info_night lead">{{ service.featured_desc }}</p>
+                          <p class="card-text info_night lead">Phone No- {{ service.featured_phone }}</p>
                         </div>
                       </div>
                     </div>
+                    {% else %}
                     <div class="carousel-item" data-bs-interval="4000">
                       <div class="card bgcolor">
-                        <img src="{{url_for('static', filename='images/def.jpg')}}" class="card-img-top" alt="...">
+                        <img src="/static/featured_images/{{service.featured_img_file}}" class="card-img-top" alt="...">
                         <div class="card-body">
-                          <h5 class="card-title info_night">Card title</h5>
-                          <p class="card-text info_night">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+                          <h5 class="card-title info_night display-6">{{ service.featured_name }}</h5>
+                          <p class="card-text info_night lead">{{ service.featured_desc }}</p>
+                          <p class="card-text info_night lead">Phone No - {{ service.featured_phone }}</p>
                         </div>
                       </div>
                     </div>
-                    <div class="carousel-item">
-                      <img src="..." class="d-block w-100" alt="...">
-                    </div>
+                    {% endif %}
+                    {% endfor %}
                   </div>
                   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -396,6 +410,9 @@
                   </button>
                 </div>
               </div> <!--End Featured Services-->
+
+              <!--To work on dynamic view for events section-->
+
               <hr>
               <div class="my-2"><a href="{{url_for('user_upcoming_events')}}">Upcoming Events</a></div>
               <div class="card mb-2 bg-dark">
@@ -422,55 +439,8 @@
           </div>
       </div>
       <script src="{{ url_for('static', filename='script/jquery.js')}}"></script>
-      <script>
-
-
-      </script>
-      <!-- postModal -->
-    <div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content bgcolor">
-          <div class="modal-header bg-transparent">
-            <h1 class="modal-title bg-transparent fs-5" id="exampleModalLabel">Post</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"><i class="fa-solid fa-xmark" style="color: #02834f;"></i></button>
-          </div>
-          <div class="modal-body bg-transparent">
-            <form action="" method="post">
-                <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-                <textarea name="post" id="post_box" cols="45" rows="3" placeholder="Select a categiry to post" class="form-control bg-transparent text-light" autocomplete="off"></textarea>
-                <div>
-                  <div class="form-check form-switch mt-2 me-4" id="post_button">
-                    <select name="" id="" class="bg-transparent text-success custom_border">
-                      <option value="">category</option>
-                    </select>
-                    <input type="checkbox" class="btn-check" id="btn-check-2-outlined" autocomplete="off">
-                    <label class="btn btn-outline-success btn-sm" for="btn-check-2-outlined">Anonymous</label>
-                    <input type="submit" value="Post" class="btn btn-sm post_button">
-                </div>
-                  <i class="fa-solid fa-photo-film fa-lg" style="color: #02834f;"></i> &nbsp;&nbsp;&nbsp;
-                  <i class="fa-solid fa-square-poll-horizontal fa-lg" style="color: #02834f;"></i>&nbsp;&nbsp;&nbsp;
-                  <i class="fa-solid fa-location-dot fa-lg" style="color: #02834f"></i>
-                </div>
-              </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    <script src="{{url_for('static', filename='script/jquery.js')}}"></script>
-  <script src="{{url_for('static', filename='external/external.js')}}"></script>
-  <script>
-    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
-    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
-
-    // Scroll to bottom on page load
-    document.addEventListener("DOMContentLoaded",function(){
-    document.querySelector('.message-container').scrollTop
-    = document.querySelector('.message-container').scrollHeight;
-    });
-
-    const popover = new bootstrap.Popover('.popover-dismiss', {
-        trigger: 'focus'
-      })
-</script>
+      <script src="{{url_for('static', filename='external/external.js')}}"></script>
+  {% block script %}
+  {% endblock script %}
 </body>
 </html>

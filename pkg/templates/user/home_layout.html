@@ -26,8 +26,8 @@
 
     </style>
 </head>
-<body>
-    <div class="container-fluid bgcolor">
+<body class="bgcolor">
+    <div class="container-fluid">
     <!-- Navigation Section -->
     <nav class="navbar navbar-expand-lg bgcolor fixed-top">
         <div class="container gap-4">
@@ -99,19 +99,15 @@
           
           <!-- Right Column (4 units) -->
           <div class="col-md-4 pt-4">
-              <div>
-                <span class="labelcol">Existing User?<a href="/login/" id="signinlink">&nbsp;Login Here</a></span><br>
-                <span class="labelcol">New User?<a href="{{url_for('sign_up')}}" id="signuplink">&nbsp;Register Here</a></span>
-              </div>
               {% with message = get_flashed_messages(with_categories=True) %}
                   {% if message %}
                       {% for cat, msg in message %}
                           {% if cat == 'error' %}
-                              <div class="alert alert-danger noround col-md-9">
+                              <div class="alert alert-danger noround col-md-9 text-center">
                                   {{ msg }}
                               </div>
                           {% else %}
-                              <div class="alert alert-info noround col-md-9">
+                              <div class="alert alert-info noround col-md-9 text-center">
                                   {{ msg }}
                               </div>
                           {% endif %}
@@ -141,22 +137,53 @@
                     {{ login.password(class="form-control bgcolor labelcol text-light", placeholder="Password", id="password") }}
                     {{ login.password.label(class="labelcol") }}
                     <button type="button" class="btn bg-none" id="btn_show">Show</button>
-                    <a id="forget_pass" href="#">Forgotten Password?</a>
+                    <a id="forget_pass" href="{{ url_for('user_forget_pass') }}">Forgotten Password?</a>
                 </div>
                 <div>
                     {{ login.submit(class="btn rounded-pill col-12", id="btn_login") }}
                 </div>
             </form>
-            <p>Don't have an account? <a id="signuplink" href="{{url_for('sign_up')}}">&nbsp;Sign Up</a></p>
+            <p id="acct_signup">Don't have an account? <a id="signuplink" href="{{url_for('sign_up')}}">&nbsp;Sign Up</a></p>
             </div>
             <!--End Login form Table-->
             {% endblock logincolumn %}
 
             {% block signupcolumn %}
               <!-- Sign up Form Table -->
-              <div id="signup" class="my-3 animate__animated animate__zoomInLeft col-md-9">
+              <span class="labelcol">Existing User?<a href="/login/" id="signinlink">&nbsp;Login</a></span><br>
+              <div id="signup" class="my-3 animate__animated animate__zoomInLeft col-md-10">
                   <form action="" method="post">
                       {{ signup.csrf_token }}
+                      <div class="row">
+                        <div class="form-floating mb-2 col-6 px-1">
+                            {% if signup.fname.errors %}
+                                {{ signup.fname(class="form-control bgcolor labelcol text-light is-invalid", placeholder="First Name") }}
+                                {{ signup.fname.label(class="labelcol") }}
+                                <div class="invalid-feedback">
+                                    {% for error in signup.fname.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ signup.fname(class="form-control bgcolor labelcol text-light", placeholder="First Name") }}
+                                {{ signup.fname.label(class="labelcol") }}
+                            {% endif %}
+                        </div>
+                        <div class="form-floating mb-2 col-6 px-1">
+                            {% if signup.lname.errors %}
+                                {{ signup.lname(class="form-control bgcolor labelcol text-light is-invalid", placeholder="Last Name") }}
+                                {{ signup.lname.label(class="labelcol") }}
+                                <div class="invalid-feedback">
+                                    {% for error in signup.lname.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ signup.lname(class="form-control bgcolor labelcol text-light", placeholder="Last Name") }}
+                                {{ signup.lname.label(class="labelcol") }}
+                            {% endif %}
+                        </div>
+                      </div>
                       <div class="form-floating mb-2">
                           {% if signup.email.errors %}
                               {{ signup.email(class="form-control bgcolor labelcol text-light is-invalid", placeholder="Email") }}
@@ -229,6 +256,8 @@
               </div>
               <!--End Sign Up form Table-->
               {% endblock signupcolumn %}
+              {% block forgot_pass %}
+              {% endblock forgot_pass %}
           </div>
       </div>
   </div>
@@ -244,57 +273,57 @@
           <div class="modal-body bgcolor">
           <!--Start-Modal Community guidelines content -->
           <div>
-              <p class="lead">Welcome to the Community Safety Network! Our community is built on principles that prioritize safety, inclusivity, and collaborative well-being. To ensure a positive and secure environment for all residents, we have established the following community guidelines. Familiarize yourself with these guidelines to contribute to a thriving and harmonious neighborhood.</p>
+              <p class="lead guide">Welcome to the Community Safety Network! Our community is built on principles that prioritize safety, inclusivity, and collaborative well-being. To ensure a positive and secure environment for all residents, we have established the following community guidelines. Familiarize yourself with these guidelines to contribute to a thriving and harmonious neighborhood.</p>
           </div>
           <!-- Guideline 1 -->
           <div>
               <h5>Safety First</h5>
-              <p class="lead">Our paramount concern is the safety of every resident. Please report any suspicious activities, emergencies, or safety concerns promptly. Utilize the incident reporting feature to keep the community informed and collectively address safety issues.</p>
+              <p class="lead guide">Our paramount concern is the safety of every resident. Please report any suspicious activities, emergencies, or safety concerns promptly. Utilize the incident reporting feature to keep the community informed and collectively address safety issues.</p>
           </div>
           <!-- Guideline 2 -->
           <div>
               <h5>Respect and Inclusivity</h5>
-              <p class="lead">Respect is the cornerstone of our community. Treat fellow residents with kindness, empathy, and understanding. Embrace the diversity within our neighborhood, acknowledging and appreciating the various cultures, traditions, and perspectives that make our community unique.</p>
+              <p class="lead guide">Respect is the cornerstone of our community. Treat fellow residents with kindness, empathy, and understanding. Embrace the diversity within our neighborhood, acknowledging and appreciating the various cultures, traditions, and perspectives that make our community unique.</p>
           </div>
           <!-- Guideline 3 -->
           <div>
               <h5>Community Watch Initiatives</h5>
-              <p class="lead">Engage actively in community watch initiatives to enhance local security. Collaborate with neighbors, participate in safety meetings, and contribute to the organization and execution of community watch programs. Together, we create a watchful and secure environment.</p>
+              <p class="lead guide">Engage actively in community watch initiatives to enhance local security. Collaborate with neighbors, participate in safety meetings, and contribute to the organization and execution of community watch programs. Together, we create a watchful and secure environment.</p>
           </div>
           <!-- Guideline 4 -->
           <div>
               <h5>Effective Communication</h5>
-              <p class="lead">Use communication channels responsibly. Be mindful of the information you share and ensure that your communication contributes positively to the community. Misuse of communication channels for spreading false information or engaging in harmful activities is strictly prohibited.</p>
+              <p class="lead guide">Use communication channels responsibly. Be mindful of the information you share and ensure that your communication contributes positively to the community. Misuse of communication channels for spreading false information or engaging in harmful activities is strictly prohibited.</p>
           </div>
           <!-- Guideline 5 -->
           <div>
               <h5>Community Health Awareness</h5>
-              <p class="lead">Stay informed about healthcare resources, events, and initiatives within the community. Actively participate in health-related activities and encourage others to prioritize their well-being. Together, we promote a healthy and resilient neighborhood.</p>
+              <p class="lead guide">Stay informed about healthcare resources, events, and initiatives within the community. Actively participate in health-related activities and encourage others to prioritize their well-being. Together, we promote a healthy and resilient neighborhood.</p>
           </div>
           <!-- Guideline 6 -->
           <div>
               <h5>Civic Responsibility</h5>
-              <p class="lead">Contribute to the betterment of our community by adhering to civic responsibilities. Follow local regulations, participate in community clean-up efforts, and support initiatives that enhance the overall quality of life for residents.</p>
+              <p class="lead guide">Contribute to the betterment of our community by adhering to civic responsibilities. Follow local regulations, participate in community clean-up efforts, and support initiatives that enhance the overall quality of life for residents.</p>
           </div>
           <!-- Guideline 7 -->
           <div>
               <h5>Event Participation</h5>
-              <p class="lead">Join community events, safety meetings, and social gatherings. Your active participation strengthens community bonds and fosters a sense of togetherness. Whether it's a safety training session or a cultural event, your involvement is invaluable.</p>
+              <p class="lead guide">Join community events, safety meetings, and social gatherings. Your active participation strengthens community bonds and fosters a sense of togetherness. Whether it's a safety training session or a cultural event, your involvement is invaluable.</p>
           </div>
           <!-- Guideline 8 -->
           <div>
               <h5>Feedback and Suggestions</h5>
-              <p class="lead">We value your feedback and suggestions. If you have ideas for improving the community or concerns that need attention, use the provided feedback channels. Your input contributes to ongoing enhancements and ensures that our community remains responsive to resident needs.</p>
+              <p class="lead guide">We value your feedback and suggestions. If you have ideas for improving the community or concerns that need attention, use the provided feedback channels. Your input contributes to ongoing enhancements and ensures that our community remains responsive to resident needs.</p>
           </div>
           <!-- Guideline 9 -->
           <div>
               <h5>Emergency Preparedness</h5>
-              <p class="lead">Be prepared for emergencies by staying informed about local emergency resources, evacuation plans, and safety protocols. Contribute to a culture of preparedness and assist neighbors in times of crisis.</p>
+              <p class="lead guide">Be prepared for emergencies by staying informed about local emergency resources, evacuation plans, and safety protocols. Contribute to a culture of preparedness and assist neighbors in times of crisis.</p>
           </div>
           <!-- Guideline 10 -->
           <div>
               <h5>Harmony and Unity</h5>
-              <p class="lead">Promote a harmonious and united community. Resolve conflicts amicably, seek common ground, and foster an atmosphere of collaboration. Our collective strength lies in our unity.</p>
+              <p class="lead guide">Promote a harmonious and united community. Resolve conflicts amicably, seek common ground, and foster an atmosphere of collaboration. Our collective strength lies in our unity.</p>
           </div>
           <br>
           <div>
@@ -312,9 +341,10 @@
     <!-- Footer Section -->
     <footer class="text-center p-3 my-0">
         <div>
-            <a href="{{ url_for('contact_info')}}" id="signuplink">Contact Information</a>&nbsp;&nbsp;||&nbsp;&nbsp; <a href="" id="signuplink">Community Resources</a>
+            <a href="{{ url_for('contact_info')}}" id="signuplink">Contact Information</a>
+            <!-- &nbsp;&nbsp;||&nbsp;&nbsp; <a href="" id="signuplink">Community Resources</a> -->
         </div>
-        <div><small>Community Safety Network&copy;2023. All Rights Reserved</small></div>
+        <div><small>Community Safety Network&copy;2024. All Rights Reserved</small></div>
     </footer>
     
 </div>

@@ -4,6 +4,16 @@
 
 {% block mid_content %}
 <div class="col-sm-5 tab2 pt-4 scroll">
-    <p>Search Results Here</p>
+    <div class="row justify-content-center">
+        <div class="col-7">
+            <input type="search" id="searchInput"  name="search" placeholder="Search" class="form-control bgcolor text-light">
+            <input type="hidden" id="csrf_token" value="{{csrf_token()}}">
+        </div>
+        <div class="col-3">
+            <button class="btn btn-success" id="search">Search</button>
+        </div>
+    </div>
+    <ul id="searchResults"></ul>
+
 </div>
 {% endblock mid_content %}
